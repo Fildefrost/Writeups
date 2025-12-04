@@ -36,4 +36,4 @@ Las principales plataformas y entornos vulnerables usados:&#x20;
 
 
 
-⚒️ Este espacio no es solo un repositorio: es mi laboratorio personal.
+#### ⚔️️ Este espacio no es solo un repositorio: es mi laboratorio personal ⚔️
