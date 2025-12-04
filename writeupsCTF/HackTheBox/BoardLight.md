@@ -1,14 +1,10 @@
 # BoardLight
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-Created time: 2 de diciembre de 2024 14:00
-IP: 10.10.11.11
+## BoardLight
 
-# Reconocimiento
+Plataforma: HackTheBox OS: Linux Level: Easy Status: Done Complete: Yes Created time: 2 de diciembre de 2024 14:00 IP: 10.10.11.11
+
+## Reconocimiento
 
 NMAP (allports)
 
@@ -18,10 +14,8 @@ sudo nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 10.10.11.11 -oN extractport
 ```
 
 > Resultats:
-> 
-> 
-> ![image.png](/images/HackTheBox/image.png)
-> 
+>
+> <img src="../../.gitbook/assets/image (1).png" alt="image.png" data-size="original">
 
 NMAP Ports:
 
@@ -31,17 +25,14 @@ sudo nmap -p22,80 -sCV 10.10.11.11 -oN nmap
 ```
 
 > Resultats:
-> 
-> 
-> ![image.png](/images/HackTheBox/image%201.png)
-> 
+>
+> <img src="../../.gitbook/assets/image 1 (1).png" alt="image.png" data-size="original">
 
 Análisis de vulnerabilidades
 
-POC RCE
-[https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253](https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253)
+POC RCE [https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253](https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253)
 
-# Explotación de vulnerabilidades
+## Explotación de vulnerabilidades
 
 Executem exploit per a Dolibar 17.0.0
 
@@ -51,7 +42,7 @@ nc -lvnp 4444
 
 ```
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 Tractament TTY:
 
@@ -65,13 +56,13 @@ export SHELL=bash
 
 ```
 
-# Escalada de privilegios
+## Escalada de privilegios
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Trobem al directori /tmp/pr4gm$:
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 descarreguem el arxiu
 
@@ -97,11 +88,11 @@ cat results | grep board
 
 Trobem la configuracio de la base de dades:
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
 Trobem diferents usuaris per la BD: config.php
 
-![image.png](/images/HackTheBox/image%206.png)
+![image.png](<../../.gitbook/assets/image 6 (1).png>)
 
 Pass: serverfun2$2023!!
 
@@ -109,8 +100,7 @@ Provem aquest password amb usuari larissa
 
 Escalem privilegis a larissa
 
-Canviem la revershell per ssh i entrem com a larissa
-trobem flag: user.txt
+Canviem la revershell per ssh i entrem com a larissa trobem flag: user.txt
 
 user.txt: 8551aca9cdeb37137c17fd1fa350ea1a
 
@@ -121,10 +111,9 @@ find / -perm -u=s -type f 2>/dev/null
 
 ```
 
-![image.png](/images/HackTheBox/image%207.png)
+![image.png](<../../.gitbook/assets/image 7 (1).png>)
 
-Trobem que podem explotar el enlightenment_sys
-Busquem exploit:
+Trobem que podem explotar el enlightenment\_sys Busquem exploit:
 
 [https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit/blob/main/exploit.sh](https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit/blob/main/exploit.sh)
 
@@ -147,10 +136,8 @@ chmod a+x [exploit.sh](http://exploit.sh/)
 
 executem [exploit.sh](http://exploit.sh/)
 
-![image.png](/images/HackTheBox/image%208.png)
+![image.png](<../../.gitbook/assets/image 8 (1).png>)
 
-# Bandera(s)
+## Bandera(s)
 
-> User:  8551aca9cdeb37137c17fd1fa350ea1a
-Root: 75a52752844333fea88a3d9c60494889
->
+> User: 8551aca9cdeb37137c17fd1fa350ea1a Root: 75a52752844333fea88a3d9c60494889

@@ -1,22 +1,12 @@
 # Archetype
 
-Plataforma: HackTheBox
-OS: Windows
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 22 de diciembre de 2024 15:44
-IP: 10.129.51.6
+Plataforma: HackTheBox OS: Windows Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 22 de diciembre de 2024 15:44 IP: 10.129.51.6
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento general
 
-</aside>
-
-Identificamos sistema con Wichsystem : 
+Identificamos sistema con Wichsystem :
 
 ```bash
 whichsystem.py 10.129.51.6
@@ -28,26 +18,26 @@ whichsystem.py 10.129.51.6
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open -T5 -sS --min-rate 5000 -n -Pn -vvv 10.129.51.6 -oG targeted
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p135,139,445,1433,5985,47001,49664,49666,49667,49668,49669 -sCV 10.129.51.6 -oN allports
 ```
 
-- **Identificación de vulnerabilidades**
-    
+*   **Identificación de vulnerabilidades**
+
     ```bash
     PORT      STATE SERVICE      VERSION
     135/tcp   open  msrpc        Microsoft Windows RPC
@@ -87,7 +77,7 @@ Una vez listado los puertos accesibles, procederemos a realizar la enumeración 
     49668/tcp open  msrpc        Microsoft Windows RPC
     49669/tcp open  msrpc        Microsoft Windows RPC
     Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
-    
+
     Host script results:
     | smb-security-mode: 
     |   account_used: guest
@@ -107,18 +97,14 @@ Una vez listado los puertos accesibles, procederemos a realizar la enumeración 
     | smb2-security-mode: 
     |   3:1:1: 
     |_    Message signing enabled but not required
-    
+
     Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
     Nmap done: 1 IP address (1 host up) scanned in 99.25 seconds
     ```
-    
 
 ## Explotación
 
-<aside>
 💡 Probamos diferentes accesos
-
-</aside>
 
 ### Explotación 1
 
@@ -168,9 +154,9 @@ smb: \> !cat
     </Configuration>
 ```
 
-User: sql_svc
+User: sql\_svc
 
-Password:  M3g4c0rp123
+Password: M3g4c0rp123
 
 Probamos a conectarnos mediante impacket con las credenciales obtenidas:
 
@@ -244,10 +230,7 @@ PS C:\Windows\system32>
 
 ### Explotación posterior
 
-<aside>
 💡 Accedemos con las credenciales encontradas
-
-</aside>
 
 ### Escalada de privilegios
 
@@ -292,7 +275,4 @@ b91ccec3305e98240082d4474b848528
 
 ## Conclusión
 
-<aside>
 💡 En esta sección, debes proporcionar un resumen de la máquina para cuando tengas que volver a ella, puedas saber conocer de forma rápida de que se trataba
-
-</aside>

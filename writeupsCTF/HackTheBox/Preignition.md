@@ -1,25 +1,16 @@
 # Preignition
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-Created time: 4 de enero de 2025 15:38
-IP: 10.129.77.25
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes Created time: 4 de enero de 2025 15:38 IP: 10.129.77.25
 
 ## Recopilación de información
 
-<aside>
 💡 Maquina linux del Trier 0 HTB
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.77.25 -oG allports
@@ -33,22 +24,21 @@ PORT   STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p80 -sCV 10.129.77.25 -oN targeted
 ```
 
-- **Identificación de vulnerabilidades**
-    - 80/tcp open  http    nginx 1.14.2
-        
-        ```bash
-        PORT   STATE SERVICE VERSION
-        80/tcp open  http    nginx 1.14.2
-        |_http-title: Welcome to nginx!
-        |_http-server-header: nginx/1.14.2
-        ```
-        
+* **Identificación de vulnerabilidades**
+  *   80/tcp open http nginx 1.14.2
+
+      ```bash
+      PORT   STATE SERVICE VERSION
+      80/tcp open  http    nginx 1.14.2
+      |_http-title: Welcome to nginx!
+      |_http-server-header: nginx/1.14.2
+      ```
 
 Enumeramos la web
 
@@ -59,7 +49,7 @@ whatweb 10.129.77.25
 http://10.129.77.25 [200 OK] Country[RESERVED][ZZ], HTML5, HTTPServer[nginx/1.14.2], IP[10.129.77.25], Title[Welcome to nginx!], nginx[1.14.2]
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 Fuzzing
 
@@ -81,30 +71,24 @@ PORT   STATE SERVICE VERSION
 
 Result: admin.php
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
-Probamos con credenciales por defecto 
+Probamos con credenciales por defecto
 
 Admin / admin
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 Flag: 6483bee07c1c1d57f14e5b0717503c73
 
 ## Explotación
 
-<aside>
 💡 No hay explotacion
 
-</aside>
-
-### 
+###
 
 ## Conclusión
 
-<aside>
 💡 En esta sección, debes proporcionar un resumen de la máquina para cuando tengas que volver a ella, puedas saber conocer de forma rápida de que se trataba
-
-</aside>
 
 Maquina muy facil , sin escalada de privilegios

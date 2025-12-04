@@ -1,20 +1,10 @@
 # Keeper
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 30 de enero de 2025 21:29
-IP: 10.10.11.227
+Plataforma: HackTheBox OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 30 de enero de 2025 21:29 IP: 10.10.11.227
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento general
-
-</aside>
 
 Sistema
 
@@ -29,7 +19,7 @@ whichSystem.py 10.10.11.227
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open -T5 -sS --min-rate 5000 -n -Pn -vvv 10.10.11.227 -oG targeted
@@ -44,7 +34,7 @@ PORT   STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 sudo nmap -p22,80 -sCV 10.10.11.227 -oN targeted
@@ -59,20 +49,18 @@ PORT   STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.3
-    - 22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.3
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.3
+  * 22/tcp open ssh OpenSSH 8.9p1 Ubuntu 3ubuntu0.3
+*   Enumeracion web
 
-- Enumeracion web
-    
-    ![image.png](/images/HackTheBox/image.png)
-    
-    ![image.png](/images/HackTheBox/image%201.png)
-    
+    ![image.png](<../../.gitbook/assets/image (1).png>)
+
+    ![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 Añadimos al /etc/host : tickets.keeper.htb
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 Vemos que usa “Request Tracker”
 
@@ -80,22 +68,19 @@ Buscamos las credenciales por defecto : root/password
 
 Nos logamos en el panel
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Vamos a la seccion Usuarios y vemos
 
 Usuario: lnorgaard
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Probamos a acceder por SSH : Explotacion 1
 
 ## Explotación
 
-<aside>
 💡 Probamos diferentes accesos
-
-</aside>
 
 ### Explotación 1
 
@@ -140,7 +125,7 @@ Archive:  RT30000.zip
 
 ```
 
-Vemos que es posible extraer la contraseña maestra de KeePassDumpFUll.dmp debido al CVE-2023-32784  
+Vemos que es posible extraer la contraseña maestra de KeePassDumpFUll.dmp debido al CVE-2023-32784
 
 Buscamos un exploot
 
@@ -156,17 +141,17 @@ python3 poc.py KeePassDumpFull.dmp
 
 Si buscamos el resultado en google aparece que es un postre de dinamarca:
 
-***rødgrød med fløde***
+_**rødgrød med fløde**_
 
 Instalamos KeePass y abrimos el fichero con la contraseña
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
-![image.png](/images/HackTheBox/image%206.png)
+![image.png](<../../.gitbook/assets/image 6 (1).png>)
 
 El formato es un formato de ppk (Putty Private Key)
 
-Convertimos el formato a id_rsa
+Convertimos el formato a id\_rsa
 
 ```bash
 puttygen private.ppk -O private-openssh -o id_rsa
@@ -176,10 +161,7 @@ chmod 600 id_rsa
 
 ### Explotación posterior
 
-<aside>
 💡 Accedemos con las credenciales encontradas
-
-</aside>
 
 ### Escalada de privilegios
 
@@ -193,7 +175,4 @@ root@keeper:~#
 
 ## Conclusión
 
-<aside>
-💡 Maquina facil que me ha dado trabajo encontrar que era formato ppk y convertirlo en id_rsa
-
-</aside>
+💡 Maquina facil que me ha dado trabajo encontrar que era formato ppk y convertirlo en id\_rsa

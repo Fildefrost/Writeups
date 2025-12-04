@@ -1,12 +1,6 @@
 # Amor
 
-Plataforma: Dockerlabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 5 de diciembre de 2024 21:10
+Plataforma: Dockerlabs OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 5 de diciembre de 2024 21:10
 
 ## Reconeixement
 
@@ -16,23 +10,22 @@ Created time: 5 de diciembre de 2024 21:10
 sudo nmap -p- -sS -sCV --min-rate 5000 -vvv  -n -Pn 172.17.0.2 -oG allports
 ```
 
-![image.png](/images/DockerLabs/image.png)
+![image.png](../../.gitbook/assets/image.png)
 
 ```bash
 sudo nmap -sCV -p22,80 172.17.0.2 -oN targeted
 cat targeted -l ruby
 ```
 
-![image.png](/images/DockerLabs/image%201.png)
+![image.png](<../../.gitbook/assets/image 1.png>)
 
 Web :
 
-![image.png](/images/DockerLabs/image%202.png)
+![image.png](<../../.gitbook/assets/image 2.png>)
 
 Possibles usuaris :
 
-Carlota
-Juan
+Carlota Juan
 
 ### Provem possibles usuaris SSH
 
@@ -42,7 +35,7 @@ Juan
 gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 30 -u [http://172.17.0.2/](http://172.17.0.2/) -x html,php,php7,txt,py
 ```
 
-![image.png](/images/DockerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3.png>)
 
 Fuff per trobar directoris :
 
@@ -54,14 +47,13 @@ ffuf -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt 
 
 Provem hydra amb els usuarios trobats:
 
-Juan : no troba pass
-Carlota: babygirl
+Juan : no troba pass Carlota: babygirl
 
 provem conexio ssh
 
 Entrem com a carlota i trobem fitxer:
 
-![image.png](/images/DockerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4.png>)
 
 Descarreguem fitxer amb :
 
@@ -71,12 +63,11 @@ ssh [carlota@172.17.0.2](mailto:carlota@172.17.0.2) 'cat /home/carlota/Desktop/f
 
 Mirem contingut amb Exiftool, pero no trobem res
 
-![image.png](/images/DockerLabs/image%205.png)
+![image.png](<../../.gitbook/assets/image 5.png>)
 
 Trobem un altre usuari:
 
-oscar
-ubuntu
+oscar ubuntu
 
 Provem hydra
 
@@ -94,19 +85,17 @@ sudo steghide extract -sf imagen.jpg
 
 Trobem fitxer secret.txt
 
-![image.png](/images/DockerLabs/image%206.png)
+![image.png](<../../.gitbook/assets/image 6.png>)
 
 ZXNsYWNhc2FkZXBpbnlwb24=
 
-Decodifiquem cadena:
-echo "ZXNsYWNhc2FkZXBpbnlwb24=" | base64 -d; echo
+Decodifiquem cadena: echo "ZXNsYWNhc2FkZXBpbnlwb24=" | base64 -d; echo
 
 ZXNsYWNhc2FkZXBpbnlwb24=:eslacasadepinypon
 
 Probem aquest password amb l'altre usuari
 
-Oscar
-eslacasadepinypon
+Oscar eslacasadepinypon
 
 Entrem per ssh
 
@@ -117,11 +106,11 @@ Pass: eslacasadepinypon
 
 Busquem fitxers
 
-![image.png](/images/DockerLabs/image%207.png)
+![image.png](<../../.gitbook/assets/image 7.png>)
 
 Al escriptori hi ha un txt:
 
-![image.png](/images/DockerLabs/image%208.png)
+![image.png](<../../.gitbook/assets/image 8.png>)
 
 ### Escalada
 
@@ -131,16 +120,16 @@ Busquem permisos amb sudo
 Sudo -l
 ```
 
-![image.png](/images/DockerLabs/image%209.png)
+![image.png](<../../.gitbook/assets/image 9.png>)
 
 Podem explotar: ruby
 
 Busquem GTOBINS:
 
-![image.png](/images/DockerLabs/image%2010.png)
+![image.png](<../../.gitbook/assets/image 10.png>)
 
 Executem :
 
-![image.png](/images/DockerLabs/image%2011.png)
+![image.png](<../../.gitbook/assets/image 11.png>)
 
-![image.png](/images/DockerLabs/image%2012.png)
+![image.png](<../../.gitbook/assets/image 12.png>)

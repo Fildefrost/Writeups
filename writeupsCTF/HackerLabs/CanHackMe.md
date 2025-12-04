@@ -1,20 +1,10 @@
 # CanHackMe
 
-Plataforma: HackersLabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 9 de febrero de 2025 17:07
-IP: 192.168.0.137
+Plataforma: HackersLabs OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 9 de febrero de 2025 17:07 IP: 192.168.0.137
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento general
-
-</aside>
 
 Identificación del sistema
 
@@ -39,7 +29,7 @@ Ending arp-scan 1.10.0: 256 hosts scanned in 3.230 seconds (79.26 hosts/sec). 5 
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open -T5 -sS --min-rate 5000 -n -Pn -vvv 192.168.0.137 -oG targeted
@@ -54,7 +44,7 @@ MAC Address: 00:0C:29:88:50:B6 (VMware)
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 sudo nmap -p22,80 -sCV 192.1638.0.137 -oN targeted
@@ -71,23 +61,21 @@ MAC Address: 00:0C:29:88:50:B6 (VMware)
 Service Info: Host: 172.17.0.2; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5
-    - 80/tcp open  http    Apache httpd 2.4.58
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 9.6p1 Ubuntu 3ubuntu13.5
+  * 80/tcp open http Apache httpd 2.4.58
+*   **ENUMERACIÓN WEB**
 
-- **ENUMERACIÓN WEB**
-    
-    ![image.png](/images/HackerLabs/image.png)
-    
+    ![image.png](<../../.gitbook/assets/image (2).png>)
+
     Añadimos host
-    
+
     ```bash
     sudo nano /etc/hosts
     192.168.0.137   canyouhackme.thl
     ```
-    
 
-![image.png](/images/HackerLabs/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (2).png>)
 
 Revisamos el codigo fuente:
 
@@ -148,10 +136,7 @@ Enontramos e password: matrix
 
 ## Explotación
 
-<aside>
 💡 Probamos diferentes accesos
-
-</aside>
 
 ### Explotación 1
 
@@ -165,7 +150,7 @@ juan@TheHackersLabs-CanYouHackMe:~$
 
 ### Explotación 2
 
-Vemos que en el home de Juan, hay la carpeta docker. 
+Vemos que en el home de Juan, hay la carpeta docker.
 
 Procedemos a listar las imagenes docker
 
@@ -231,7 +216,4 @@ root@76bc47806862:~# cat root.txt
 
 ## Conclusión
 
-<aside>
 💡 Maquina fácil en la que veo por primera vez tema de contenedores de docker
-
-</aside>

@@ -1,19 +1,12 @@
 # CyberPunk
 
-Plataforma: HackersLabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-Created time: 9 de marzo de 2025 15:28
-IP: 192.168.0.78
+## CyberPunk
 
-## Recopilación de información
+Plataforma: HackersLabs OS: Linux Level: Easy Status: Done Complete: Yes Created time: 9 de marzo de 2025 15:28 IP: 192.168.0.78
 
-<aside>
+### Recopilación de información
+
 💡 Reconocimiento general
-
-</aside>
 
 Identificación del sistema:
 
@@ -165,7 +158,7 @@ Progress: 661677 / 661680 (100.00%)
 
 No encontramos nada. Siguiendo la pista que nos tiran, probamos a buscar vulnerabilidades en la versión de Apache 2.4.59
 
-# Análisis de vulnerabilidades
+## Análisis de vulnerabilidades
 
 Apache 2.4.59
 
@@ -177,8 +170,7 @@ Apache + PHP < 5.3.12 / < 5.4.2 - Remote Code Execution + Scanner               
 
 ```
 
-Al ver que no hay nada vamos a probar otro método.
-Ya que haciendo fuzzing hemos visto que se muestra el mismo fichero que había alojado en el FTP, vamos a probar a subir un archivo para comprobar si podemos acceder
+Al ver que no hay nada vamos a probar otro método. Ya que haciendo fuzzing hemos visto que se muestra el mismo fichero que había alojado en el FTP, vamos a probar a subir un archivo para comprobar si podemos acceder
 
 ```bash
 ftp anonymous@192.168.0.78
@@ -186,10 +178,9 @@ ftp> put cmd_Search.php
 
 ```
 
-![image.png](/images/HackerLabs/image.png)
+![image.png](<../../.gitbook/assets/image (2).png>)
 
-Vemos que accedermos correctamente.
-Accedemos al fichero `/etc/passwd` y enumeramos usuarios:
+Vemos que accedermos correctamente. Accedemos al fichero `/etc/passwd` y enumeramos usuarios:
 
 ```bash
 root:x:0:0:root:/root:/bin/bash
@@ -205,17 +196,13 @@ hydra -l arasaka -P /usr/share/wordlist/rockyou.txt 192.168.0.78 ssh
 
 ```
 
-## Explotación
+### Explotación
 
-<aside>
 💡 Probamos diferentes accesos
 
-</aside>
+####
 
-### 
-
-Al parecer, transcurido un tiempo, no encontramos password.
-Probamos a entrar subiendo directamente una rever shell (PentestMonkey) con el método anterior, al FTP y accedemos a
+Al parecer, transcurido un tiempo, no encontramos password. Probamos a entrar subiendo directamente una rever shell (PentestMonkey) con el método anterior, al FTP y accedemos a
 
 `http://192.168.0.78/shell.php`
 
@@ -243,7 +230,7 @@ www-data@Cyberpunk:/$ stty rows 24 cols 185
 
 ```
 
-### Escalada de privilegios
+#### Escalada de privilegios
 
 Probamos varias maeras de escalar privilegos
 
@@ -273,9 +260,7 @@ find / -perm -u=s -type f 2/dev/null
 
 ```
 
-No encontramos nada útil
-Vamos a enumerar privilegios con linepeas
-Subimos el archivo mediante el ftp y accedemos a el por la revershell
+No encontramos nada útil Vamos a enumerar privilegios con linepeas Subimos el archivo mediante el ftp y accedemos a el por la revershell
 
 En el log , encontramos algo interesante:
 
@@ -296,12 +281,9 @@ www-data@Cyberpunk:/opt$ cat arasaka.txt
 
 ```
 
-Se trata de un tipo de código llamado BrainFuck.
-Decodificamos el código con la web :
-`https://www.dcode.fr/brainfuck-language` da como resultado: `c------77`
-Comprobamos si ese es el password del usuario arasaka
+Se trata de un tipo de código llamado BrainFuck. Decodificamos el código con la web : `https://www.dcode.fr/brainfuck-language` da como resultado: `c------77` Comprobamos si ese es el password del usuario arasaka
 
----
+***
 
 ```bash
 www-data@Cyberpunk:/opt$ su arasaka

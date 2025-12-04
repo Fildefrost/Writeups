@@ -1,25 +1,16 @@
 # Ignition
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-Created time: 5 de enero de 2025 14:01
-IP: 10.129.1.27
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes Created time: 5 de enero de 2025 14:01 IP: 10.129.1.27
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.1.27 -oG allports
@@ -32,7 +23,7 @@ PORT   STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p80 -sCV 10.129.1.27 -oN targeed
@@ -43,8 +34,8 @@ PORT   STATE SERVICE VERSION
 |_http-server-header: nginx/1.14.2
 ```
 
-- **Identificación de vulnerabilidades**
-    - 80/tcp open  http    nginx 1.14.2
+* **Identificación de vulnerabilidades**
+  * 80/tcp open http nginx 1.14.2
 
 **Enumeracion web**
 
@@ -56,7 +47,7 @@ sudo nano /etc/hosts
 
 Visitamos el sitio
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 Scripts nmap
 
@@ -109,11 +100,11 @@ Starting gobuster in directory enumeration mode
 
 Enumeramos /admin
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 En la pagina /setup encontramos la versión:
 
-Magento Version dev-2.4-develop 
+Magento Version dev-2.4-develop
 
 Usamos un script en python para buscar la contraseña de admin del panel de login:
 
@@ -131,18 +122,12 @@ Password: qwerty123
 
 Nota: Las pistas de HTBox decian que se podia hacer una busqueda de los passwords mas usados en 2024. Buscandolo en google encontramos (qwerty123)
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 ## Explotación
 
-<aside>
 💡 No hay explotación ni escalada de privilegios
-
-</aside>
 
 ## Conclusión
 
-<aside>
-💡 Maquina fácil. Tener presente leer todos los paneles (dashboard)  y home pages, ya que no he visto la flag del dashboard y he perdido mucho tiempo buscando maneras de acceder.
-
-</aside>
+💡 Maquina fácil. Tener presente leer todos los paneles (dashboard) y home pages, ya que no he visto la flag del dashboard y he perdido mucho tiempo buscando maneras de acceder.

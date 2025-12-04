@@ -1,25 +1,16 @@
 # Mongod
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-Created time: 4 de enero de 2025 16:02
-IP: 10.129.83.144
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes Created time: 4 de enero de 2025 16:02 IP: 10.129.83.144
 
 ## Recopilación de información
 
-<aside>
 💡 Maquina very easy del Trier 0 de HTB
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -www 10.129.83.144 -oG allports
@@ -29,13 +20,13 @@ PORT      STATE SERVICE REASON
 27017/tcp open  mongod  syn-ack ttl 63
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 sudo nmap -sCV -p22,27017 10.129.83.144 -oN targeted
@@ -49,9 +40,9 @@ PORT      STATE SERVICE VERSION
 27017/tcp open  mongodb MongoDB 3.6.8 3.6.8
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp    open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
-    - 27017/tcp open  mongodb MongoDB 3.6.8 3.6.8
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+  * 27017/tcp open mongodb MongoDB 3.6.8 3.6.8
 
 Vemos que con el script de nmap nos ha enumerado toda la BD de Mongo
 
@@ -94,14 +85,8 @@ Flag: 1b6e6fb359e7c40241b6d431427ba6ea
 
 ## Explotación
 
-<aside>
 💡 No hay explotación
-
-</aside>
 
 ## Conclusión
 
-<aside>
 💡 Maquina muy facil, sin explotación
-
-</aside>

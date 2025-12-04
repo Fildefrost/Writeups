@@ -1,25 +1,16 @@
 # Explosion
 
-Plataforma: HackTheBox
-OS: Windows
-Level: Very Easy
-Status: Done
-Complete: Yes
-Created time: 4 de enero de 2025 21:01
-IP: 10.129.1.13
+Plataforma: HackTheBox OS: Windows Level: Very Easy Status: Done Complete: Yes Created time: 4 de enero de 2025 21:01 IP: 10.129.1.13
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.1.13 -oG allports
@@ -42,13 +33,13 @@ PORT      STATE SERVICE       REASON
 
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p135,139,445,3389,5985,47001,49664,49665,49666,49667,49668,49669,49670,49671 -sCV 10.129.1.13 -oN targeted
@@ -95,21 +86,18 @@ Host script results:
 |_  start_date: N/A
 ```
 
-- **Identificación de vulnerabilidades**
-    - 135/tcp   open  msrpc         syn-ack ttl 127
-    - 139/tcp   open  netbios-ssn   syn-ack ttl 127
-    - 445/tcp   open  microsoft-ds  syn-ack ttl 127
-    - 3389/tcp  open  ms-wbt-server syn-ack ttl 127
-    - 5985/tcp  open  wsman         syn-ack ttl 127
-    - 47001/tcp open  winrm         syn-ack ttl 127
-    - 
+* **Identificación de vulnerabilidades**
+  * 135/tcp open msrpc syn-ack ttl 127
+  * 139/tcp open netbios-ssn syn-ack ttl 127
+  * 445/tcp open microsoft-ds syn-ack ttl 127
+  * 3389/tcp open ms-wbt-server syn-ack ttl 127
+  * 5985/tcp open wsman syn-ack ttl 127
+  * 47001/tcp open winrm syn-ack ttl 127
+  *
 
 ## Explotación
 
-<aside>
 💡 Probamos a conectarnos por rdp con usuario administrador
-
-</aside>
 
 ### Explotación 1
 
@@ -123,7 +111,4 @@ Flag: **951fa96d7830c451b536be5a6be008a0**
 
 ## Conclusión
 
-<aside>
 💡 Maquina fácil sin escalada ni complicaciones
-
-</aside>

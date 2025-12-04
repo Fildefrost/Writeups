@@ -1,63 +1,52 @@
 # ColdBox
 
-Plataforma: TryHackMe
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 30 de diciembre de 2024 15:45
-IP: 10.10.134.48
+Plataforma: TryHackMe OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 30 de diciembre de 2024 15:45 IP: 10.10.134.48
 
 ## Recopilación de información
 
-<aside>
 💡 Enumeración inicial
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.10.134.48 -oG allports
 ```
 
-![image.png](/images/TryHackMe/image.png)
+![image.png](<../../.gitbook/assets/image (3).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
-- **Identificación de vulnerabilidades**
-    - Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-    - 80/tcp   open  http    Apache httpd 2.4.18 ((Ubuntu)
-    
+*   **Identificación de vulnerabilidades**
+
+    * Service Info: OS: Linux; CPE: cpe:/o:linux:linux\_kernel
+    * 80/tcp open http Apache httpd 2.4.18 ((Ubuntu)
+
     ```bash
     |_http-server-header: Apache/2.4.18 (Ubuntu)
     |_http-title: ColddBox | One more machine
     |_http-generator: WordPress 4.1.31
     ```
-    
-    - 4512/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
-    
-- **Enumeración web**
-    
+
+    * 4512/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+*   **Enumeración web**
+
     ```bash
     whatweb 10.10.134.48
-    
+
     http://10.10.134.48 [200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)], IP[10.10.134.48], JQuery[1.11.1], MetaGenerator[WordPress 4.1.31], PoweredBy[WordPress,WordPress,], Script[text/javascript], Title[ColddBox | One more machine], WordPress[4.1.31], x-pingback[/xmlrpc.php]
     ```
-    
+
     **WordPress 4.1.31**
-    
-    ![image.png](/images/TryHackMe/image%201.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image 1 (3).png>)
 
 Hacemos fuzzing para ver si encontramos directorios :
 
@@ -65,17 +54,17 @@ Hacemos fuzzing para ver si encontramos directorios :
 ❯ gobuster dir -u http://10.10.134.48/ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
 ```
 
-![image.png](/images/TryHackMe/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (3).png>)
 
 En el panel /hidden enontramos posibles usuarios :
 
-![image.png](/images/TryHackMe/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (3).png>)
 
 Users: C0ldd, Hugo, Philip
 
 Encontramos un WordPress:
 
-![image.png](/images/TryHackMe/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (3).png>)
 
 Enumeramos el WordPress con WPScan:
 
@@ -174,24 +163,21 @@ Accedemos al panel con usuario c0ldd
 
 ## Explotación
 
-<aside>
 💡 Explotaremos un WordPress
-
-</aside>
 
 ### Explotación 1
 
 Una vez autenticados con un usuario, probaremos a editar un plugin con una revershell :
 
-![image.png](/images/TryHackMe/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (3).png>)
 
 Editamos el tema “Twenttyfifteen” , el archivo 404.php, con una revershell en php.
 
-La ejecutamos con la ruta:  
+La ejecutamos con la ruta:
 
 http://10.10.112.7/wp-content/themes/twentyfifteen/404.php
 
-Obtenemos la revershell 
+Obtenemos la revershell
 
 Hacemos tratamiento de la tty
 
@@ -210,10 +196,7 @@ export SHELL=BASH
 
 ## Explotación posterior
 
-<aside>
 💡
-
-</aside>
 
 ### Escalada de privilegios 1
 
@@ -255,7 +238,7 @@ Buscamos GTFObins
 
 Ejecutamos en la maquina y obtenemos root
 
-### 
+###
 
 ### Escalada de privilegios 2
 
@@ -322,7 +305,4 @@ sudo ftp
 
 ## Conclusión
 
-<aside>
 💡 Maquina facil que se puede escalar privilegios de diferentes maneras
-
-</aside>

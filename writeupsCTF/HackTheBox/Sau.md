@@ -1,26 +1,18 @@
 # Sau
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 23 de enero de 2025 20:23
-IP: 10.10.11.224
+## Sau
 
-## Recopilación de información
+Plataforma: HackTheBox OS: Linux Level: Easy Status: Done Complete: Yes EJPT: yes Created time: 23 de enero de 2025 20:23 IP: 10.10.11.224
 
-<aside>
+### Recopilación de información
+
 💡
 
-</aside>
-
-### **Escaneo de puertos**
+#### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.10.11.224 -oG allports
@@ -31,11 +23,11 @@ PORT      STATE SERVICE REASON
 
 ```
 
-### **Enumeración de servicios**
+#### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p22,55555 -sCV 10.10.11.224 -oN targeted
@@ -75,9 +67,9 @@ Una vez listado los puertos accesibles, procederemos a realizar la enumeración 
 
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp    open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.7
-    - 55555/tcp open  unknown
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.7
+  * 55555/tcp open unknown
 
 Despues de estancarnos con la explotacion del SSRF, vemos en las notas que en la enumeración aparecen filtrados los puerots 80 y 8338 usando el parametro -sT o -sS no aparecen, como ha sido nuestro caso.
 
@@ -91,10 +83,9 @@ PORT      STATE    SERVICE REASON
 55555/tcp open     unknown syn-ack ttl 63
 ```
 
-- **Enumeracion Web (55555)**
-    
-    ![image.png](/images/HackTheBox/image.png)
-    
+*   **Enumeracion Web (55555)**
+
+    ![image.png](<../../.gitbook/assets/image (1).png>)
 
 Whateweb
 
@@ -105,21 +96,21 @@ http://10.10.11.224:55555 [302 Found] Country[RESERVED][ZZ], IP[10.10.11.224], R
 http://10.10.11.224:55555/web [200 OK] Bootstrap[3.3.7], Country[RESERVED][ZZ], HTML5, IP[10.10.11.224], JQuery[3.2.1], PasswordField, Script, Title[Request Baskets]
 ```
 
-En la web vemos que se esta usando : request-basket 1.2.1 y que es vulnerable a SSRF 
+En la web vemos que se esta usando : request-basket 1.2.1 y que es vulnerable a SSRF
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
 Probamos el SSRF enviando una peticion y mediante la redireccion del proxy a nuestra maquina, ver si recibimos la solicitud
 
 Creamos un basquet, nos ponemos en escucha, modificamos el proxy y usamos curl para hacer la peticion
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 ```php
 curl http://10.10.11.224:55555/2ck6d2 (basket-id)
 ```
 
-![image.png](/images/HackTheBox/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (1).png>)
 
 Ahora lo que queremos es, ya que hemos encontrado un puerto 80 filtrado, ver si mediante el SSRF podemos enumerarlo, modificando la redireccion del Proxy al puerto 80 de la propia maquina
 
@@ -127,22 +118,19 @@ Ahora lo que queremos es, ya que hemos encontrado un puerto 80 filtrado, ver si 
  URL to http://127.0.0.1:80 
 ```
 
-![image.png](/images/HackTheBox/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (1).png>)
 
 Accedemos de nuevo al basquet que hemos creado, esta vez en nuetro navegador y vemos el puerto 80 de la maquina victima
 
-![image.png](/images/HackTheBox/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (1).png>)
 
-## Explotación
+### Explotación
 
-<aside>
 💡
 
-</aside>
+#### Explotación 1
 
-### Explotación 1
-
-Vemos que corre un Maltrail v 0.53 
+Vemos que corre un Maltrail v 0.53
 
 Buscamos si es vulnerable
 
@@ -175,14 +163,11 @@ User puma may run the following commands on sau:
 puma@sau:/opt/maltrail$ 
 ```
 
-## Explotación posterior
+### Explotación posterior
 
-<aside>
 💡
 
-</aside>
-
-### Escalada de privilegios
+#### Escalada de privilegios
 
 Buscamos en GTFObins :
 
@@ -218,11 +203,8 @@ root
 59c3dd6748dd8fc2ba0ebd557ea5890b
 ```
 
-# 
+##
 
-## Conclusión
+### Conclusión
 
-<aside>
 💡 Maquina que me ha costado y he tenido que mirar writeup por desconocer como funciona correctamente el SSRF. Escalada de privilegios sin problemas.
-
-</aside>

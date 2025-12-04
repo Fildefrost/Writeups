@@ -1,19 +1,10 @@
 # BocatadeCalamares
 
-Plataforma: HackersLabs
-OS: Linux
-Level: Easy
-Status: Done
-Complete: Yes
-Created time: 15 de febrero de 2025 17:01
-IP: 192.168.0.235
+Plataforma: HackersLabs OS: Linux Level: Easy Status: Done Complete: Yes Created time: 15 de febrero de 2025 17:01 IP: 192.168.0.235
 
 ## Recopilación de información
 
-<aside>
 💡 Reconocimiento general
-
-</aside>
 
 Identificando red
 
@@ -32,7 +23,7 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p- --open -T5 -sS --min-rate 5000 -n -Pn -vvv 192.168.0.235 -oG targeted
@@ -48,7 +39,7 @@ MAC Address: 00:0C:29:4E:45:4E (VMware)
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 sudo nmap -sCV 192.168.0.235 -oN targeted
@@ -64,14 +55,12 @@ MAC Address: 00:0C:29:4E:45:4E (VMware)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-- **Identificación de vulnerabilidades**
-    - 22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5
-    - 80/tcp open  http    nginx 1.24.0 (Ubuntu)
+* **Identificación de vulnerabilidades**
+  * 22/tcp open ssh OpenSSH 9.6p1 Ubuntu 3ubuntu13.5
+  * 80/tcp open http nginx 1.24.0 (Ubuntu)
+*   **Enumeración web**
 
-- **Enumeración web**
-    
-    ![image.png](/images/HackerLabs/image.png)
-    
+    ![image.png](<../../.gitbook/assets/image (2).png>)
 
 Fuzzing
 
@@ -88,21 +77,21 @@ Starting gobuster in directory enumeration mode
 
 Login.php
 
-![image.png](/images/HackerLabs/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (2).png>)
 
 Ya que la webpricipal hace alusión a injecciones de SQL, probamos alguna con Burpsuite:
 
-![image.png](/images/HackerLabs/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (2).png>)
 
-Nos lleva directos  :
+Nos lleva directos :
 
 Admin.php
 
-![image.png](/images/HackerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3 (2).png>)
 
 To-do-list
 
-![image.png](/images/HackerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4 (2).png>)
 
 Sacamos de aquí que la web es lee-archivos en base64
 
@@ -113,11 +102,11 @@ bGVlX2FyY2hpdm9zCg==
 
 La web por tanto es bGVlX2FyY2hpdm9zCg==.php
 
-![image.png](/images/HackerLabs/image%205.png)
+![image.png](<../../.gitbook/assets/image 5 (2).png>)
 
 Interceptamos con Burpsuite y vemos este código:
 
-![image.png](/images/HackerLabs/image%206.png)
+![image.png](<../../.gitbook/assets/image 6 (2).png>)
 
 ```html
 <html>
@@ -137,18 +126,15 @@ Interceptamos con Burpsuite y vemos este código:
 
 Probamos a leer el /etc/passwd
 
-![image.png](/images/HackerLabs/image%207.png)
+![image.png](<../../.gitbook/assets/image 7 (2).png>)
 
-![image.png](/images/HackerLabs/image%208.png)
+![image.png](<../../.gitbook/assets/image 8 (2).png>)
 
-Obtenemos el fichero y con el los usuarios. 
+Obtenemos el fichero y con el los usuarios.
 
 ## Explotación
 
-<aside>
 💡 Siguiendo las indicaciones encontradas comentadas en el código, probamos a bruteforcear algun usuario con hydra
-
-</aside>
 
 ### Explotación 1
 
@@ -163,10 +149,7 @@ Burteforce superadministrador
 
 ### Explotación posterior
 
-<aside>
 💡 Accedemos con las credenciales encontradas
-
-</aside>
 
 ```html
 ❯ ssh superadministrator@192.168.0.235
@@ -184,7 +167,7 @@ superadministrator
  
 ```
 
-Buscamos binario en GTObins 
+Buscamos binario en GTObins
 
 ```bash
 ./find . -exec /bin/sh -p \; -quit

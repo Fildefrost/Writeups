@@ -2,7 +2,7 @@
 
 ## Level 1
 
-Source :&#x20;
+Source :
 
 <--The password for natas1 is 0nzCigAq7t2iALyvU9xcHlYN4MlkIwlq-->
 
@@ -134,8 +134,6 @@ Output:
 
 ## Level 7
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
-
 ```python
 Source:
 <?
@@ -171,8 +169,6 @@ Ponermos ese password en el imput secret:
 
 ## Level 8
 
-![](<../../.gitbook/assets/image (1).png>)
-
 ```python
 Source: 
 
@@ -198,8 +194,6 @@ xcoXLmzMkoIP9D7hlgPlh9XD7OgLAe5Q
 > Flag: xcoXLmzMkoIP9D7hlgPlh9XD7OgLAe5Q
 
 ## Level 9
-
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 ```python
 Source: 
@@ -276,8 +270,6 @@ Probamos el pass:
 
 ## Level 10
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
-
 ```shell
 "Buscamos: test"
 
@@ -316,8 +308,6 @@ t7I5VHvpa14sJTUGV0cbEsbYfFP2dmOu
 
 ## Level 11
 
-![](<../../.gitbook/assets/image (4).png>)
-
 ```php
 SOURCE:
 
@@ -342,16 +332,12 @@ if($key != "") {
 
 ```
 
-<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
-
 ```shell
 Payload: 
 "a  /etc/natas_webpass/natas11:UJdqkK1pTu6VLt9UHWAgRZz6sVUZ3lEk"
 ```
 
 ## Level 12
-
-<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 ```php
 "SOURCE"
@@ -467,8 +453,6 @@ Ahora, mandamos la nueva cookie y obtenemos el password:
 
 ## Level 13
 
-![](<../../.gitbook/assets/image (7).png>)&#x20;
-
 Vemos que podemos subier cualquier tipo de archivo. Provamos a subir un archivo php que lea el contenido de el password natas13
 
 ```php
@@ -477,25 +461,15 @@ Vemos que podemos subier cualquier tipo de archivo. Provamos a subir un archivo 
 
 Caputramos la peticion con Burpsuite Interceptamos con : Do intercept - Response this request Vemos que fuerza un nombr aleatorio y le asigna extension jpg, pero no hay ninguna restricción que impida cambiarlo a php
 
-Peticion original:&#x20;
-
-<figure><img src="../../.gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
+Peticion original:
 
 Modificamos nombre y extension:
 
-<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
-
 Vemos que ha subido el fichero php
-
-<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 Accedemos y capturamos la peticion para mandarla al repeater:
 
-<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
-
-&#x20;Si hacemos un send, nos ejecuta el script y nos muestra el fihero seleccionado: /etc/natas\_webpass/natas13
-
-<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+Si hacemos un send, nos ejecuta el script y nos muestra el fihero seleccionado: /etc/natas\_webpass/natas13
 
 > Flag: trbs5pCjCrkuSknBBKHhaBxq6Wm1j3LC
 
@@ -513,33 +487,17 @@ Para añadir los magic numbers sin alterar el contnido del script
 (echo -ne '\xFF\xD8\xFF\xE0'; cat natas.php) > natas.jpeg
 ```
 
-<figure><img src="../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+Campturamos con Burp y modificamos el nombre por php
 
-&#x20;Campturamos con Burp y modificamos el nombre por php
+Original:
 
+Modificado:
 
+Forward y nos lleva a :
 
-Original:&#x20;
+Accedemos y:
 
-<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
-
-&#x20;Modificado:
-
-<figure><img src="../../.gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
-
-
-
-&#x20;Forward y nos lleva a :
-
-![](<../../.gitbook/assets/image (16).png>)
-
-&#x20;Accedemos y:
-
-<figure><img src="../../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
-
-
-
-&#x20;(Los primeros simbolos son por el magic number)
+(Los primeros simbolos son por el magic number)
 
 > Flag: z3UYcr4v4uBpeX8f7EZbMHlzK4UR2XtQ
 
@@ -869,4 +827,3 @@ print(f"Contraseña extraída: {extracted_password}")
 * **Condicional `BINARY` en SQL**: Usamos `BINARY` en la consulta SQL para que sea sensible a mayúsculas y minúsculas, lo que permite diferenciar entre `a` y `A`.
 
 Output: 6OG1PbKdVjyBlpxgD4DDbRG6ZLlCGgCJ
-

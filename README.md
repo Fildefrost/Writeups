@@ -1,5 +1,6 @@
-Este es mi repositorio personal donde documento mi proceso de aprendizaje en ciberseguridad ofensiva, centrado principalmente en la resolución de Capture The Flag (CTF) de distintas plataformas.
-Mi objetivo principal es aprender, mejorar y compartir conocimientos con la comunidad.
+# 📌 Info
+
+Este es mi repositorio personal donde documento mi proceso de aprendizaje en ciberseguridad ofensiva, centrado principalmente en la resolución de Capture The Flag (CTF) de distintas plataformas. Mi objetivo principal es aprender, mejorar y compartir conocimientos con la comunidad.
 
 📌 Aquí encontrarás:
 
@@ -15,19 +16,24 @@ Mi objetivo principal es aprender, mejorar y compartir conocimientos con la comu
 
 Cada resolución va orientada a entender el por qué y el cómo, no solo el resultado.
 
-🏴 Plataformas que trabajo
-Plataforma	Estado	Enlaces/Progreso
-Hack The Box	En curso	Writeups → (agregar enlace)
-TryHackMe	Progreso continuo	Writeups → (agregar enlace)
-Root-Me	Próximamente	—
-PicoCTF / VulnHub / Otras	Alternando retos	—
+Las principales plataformas y entornos vulnerables usados:&#x20;
 
+| Plataforma       | Estado            | Enlaces/Progreso              |
+| ---------------- | ----------------- | ----------------------------- |
+| **Hack The Box** | En curso          | Writeups → _(agregar enlace)_ |
+| **TryHackMe**    | Progreso continuo | Writeups → _(agregar enlace)_ |
+|                  |                   |                               |
 
 🎯 Objetivo del proyecto
 
-✔ Mejorar mis habilidades en pentesting
-✔ Crear documentación útil y reutilizable
-✔ Compartir conocimiento con todo el que quiera aprender
-✔ Construir un portfolio técnico sólido orientado a contratación
+✔ Mejorar mis habilidades en pentesting&#x20;
 
-Este espacio no es solo un repositorio: es mi laboratorio personal.
+✔ Crear documentación útil y reutilizable
+
+&#x20;✔ Compartir conocimiento con todo el que quiera aprender
+
+&#x20;✔ Construir un portfolio técnico sólido orientado a contratación
+
+
+
+⚒️ Este espacio no es solo un repositorio: es mi laboratorio personal.
