@@ -1,4 +1,4 @@
-# 📌 Info
+# writeupsCTF
 
 Este es mi repositorio personal donde documento mi proceso de aprendizaje en ciberseguridad ofensiva, centrado principalmente en la resolución de Capture The Flag (CTF) de distintas plataformas. Mi objetivo principal es aprender, mejorar y compartir conocimientos con la comunidad.
 

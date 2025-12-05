@@ -1,7 +1,6 @@
 # Table of contents
 
-* [📌 Info](README.md)
-* [writeupsCTF](writeupsctf/README.md)
+* [writeupsCTF](README.md)
   * [Dockerlabs](writeupsctf/dockerlabs/README.md)
     * [Agua de Mayo](<writeupsCTF/DockerLabs/Agua de Mayo.md>)
     * [Amor](writeupsCTF/DockerLabs/Amor.md)
