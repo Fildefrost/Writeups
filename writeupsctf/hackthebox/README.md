@@ -1,4 +1,5 @@
 ---
+description: https://www.hackthebox.com/
 cover: ../../.gitbook/assets/HTB (1).jpg
 coverY: 8.925842696629214
 layout:
