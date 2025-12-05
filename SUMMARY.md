@@ -2,7 +2,7 @@
 
 * [📌 Info](README.md)
 * [writeupsCTF](writeupsctf/README.md)
-  * [DockerLabs](writeupsctf/dockerlabs/README.md)
+  * [Dockerlabs](writeupsctf/dockerlabs/README.md)
     * [Agua de Mayo](<writeupsCTF/DockerLabs/Agua de Mayo.md>)
     * [Amor](writeupsCTF/DockerLabs/Amor.md)
     * [Chocolate](writeupsCTF/DockerLabs/Chocolate.md)
