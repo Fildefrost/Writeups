@@ -16,11 +16,16 @@ Cada resolución va orientada a entender el por qué y el cómo, no solo el resu
 
 Las principales plataformas y entornos vulnerables usados:&#x20;
 
-| Plataforma       | Estado            | Enlaces/Progreso              |
-| ---------------- | ----------------- | ----------------------------- |
-| **Hack The Box** | En curso          | Writeups → _(agregar enlace)_ |
-| **TryHackMe**    | Progreso continuo | Writeups → _(agregar enlace)_ |
-|                  |                   |                               |
+<div><figure><img src=".gitbook/assets/htbox_logo.jpg" alt=""><figcaption><p><a href="https://www.hackthebox.com/"><strong>Hack The Box</strong></a></p></figcaption></figure> <figure><img src=".gitbook/assets/hackerlabs_logo.jpg" alt=""><figcaption><p><a href="https://thehackerslabs.com/"><strong>Hackerlabs</strong></a></p></figcaption></figure> <figure><img src=".gitbook/assets/tryhackme_logo.jpg" alt=""><figcaption><p><a href="https://tryhackme.com/"><strong>THM</strong></a></p></figcaption></figure> <figure><img src=".gitbook/assets/dockerlabs_logo.jpg" alt=""><figcaption><p><a href="https://dockerlabs.es/"><strong>Dockerlabs</strong></a></p></figcaption></figure></div>
+
+
+
+| Plataforma                                      | Estado            | Enlaces/Progreso              |
+| ----------------------------------------------- | ----------------- | ----------------------------- |
+| [**Hack The Box**](https://www.hackthebox.com/) |                   | Writeups → /                  |
+| [**THM**](https://tryhackme.com/)               | Progreso continuo | Writeups → _(agregar enlace)_ |
+| [**Dockerlabs**](https://dockerlabs.es/)        |                   |                               |
+| [**Hackerlabs**](https://thehackerslabs.com/)   |                   |                               |
 
 🎯 Objetivo del proyecto
 
