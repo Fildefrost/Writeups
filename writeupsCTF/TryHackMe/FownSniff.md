@@ -1,11 +1,6 @@
 # FownSniff
 
-Plataforma: TryHackMe
-OS: Linux
-Level: Easy
-Status: In progress
-Complete: No
-Created time: 4 de diciembre de 2024 21:45
+Plataforma: TryHackMe OS: Linux Level: Easy Status: In progress Complete: No Created time: 4 de diciembre de 2024 21:45
 
 ## Notas
 
@@ -15,40 +10,31 @@ Created time: 4 de diciembre de 2024 21:45
 
 Comenzamos con un escaneo para identificar que puertos están abiertos.
 
----
+***
 
-PORT    STATE SERVICE VERSION
+```bash
+PORT STATE SERVICE VERSION
+22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 90:35:66:f4:c6:d2:95:12:1b:e8:cd:de:aa:4e:03:23 (RSA) | 256 53:9d:23:67:34:cf:0a:d5:5a:9a:11:74:bd:fd:de:71 (ECDSA) |_ 256 a2:8f:db:ae:9e:3d:c9:e6:a9:ca:03:b1:d7:1b:66:83 (ED25519)
+80/tcp open http Apache httpd 2.4.18 ((Ubuntu)) |_http-server-header: Apache/2.4.18 (Ubuntu) |http-title: Fowsniff Corp - Delivering Solutions | http-robots.txt: 1 disallowed entry |/
+110/tcp open pop3 Dovecot pop3d |_pop3-capabilities: UIDL CAPA AUTH-RESP-CODE SASL(PLAIN) TOP USER RESP-CODES PIPELINING
+143/tcp open imap Dovecot imapd |_imap-capabilities: ID more IDLE Pre-login LITERAL+ LOGIN-REFERRALS SASL-IR ENABLE have listed post-login capabilities OK IMAP4rev1 AUTH=PLAINA0001 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-22/tcp  open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey:
-|   2048 90:35:66:f4:c6:d2:95:12:1b:e8:cd:de:aa:4e:03:23 (RSA)
-|   256 53:9d:23:67:34:cf:0a:d5:5a:9a:11:74:bd:fd:de:71 (ECDSA)
-|_  256 a2:8f:db:ae:9e:3d:c9:e6:a9:ca:03:b1:d7:1b:66:83 (ED25519)
 
-80/tcp  open  http    Apache httpd 2.4.18 ((Ubuntu))
-|_http-server-header: Apache/2.4.18 (Ubuntu)
-|*http-title: Fowsniff Corp - Delivering Solutions
-| http-robots.txt: 1 disallowed entry
-|*/
 
-110/tcp open  pop3    Dovecot pop3d
-|_pop3-capabilities: UIDL CAPA AUTH-RESP-CODE SASL(PLAIN) TOP USER RESP-CODES PIPELINING
 
-143/tcp open  imap    Dovecot imapd
-|_imap-capabilities: ID more IDLE Pre-login LITERAL+ LOGIN-REFERRALS SASL-IR ENABLE have listed post-login capabilities OK IMAP4rev1 AUTH=PLAINA0001
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
 
 ### **Enumeración de servicios**
 
 Una vez listado los puertos accesibles, procederemos a realizar la enumeración de servicios para su posterior identificación de vulnerabilidades.
 
----
+***
 
-- **Identificación de vulnerabilidades**
-    - 22/SSH
-    - 80/HTTP
-    - 110/POP3
-    - 143/ IMAP
+* **Identificación de vulnerabilidades**
+  * 22/SSH
+  * 80/HTTP
+  * 110/POP3
+  * 143/ IMAP
 
 Twiteer de Fownsniff
 
@@ -186,16 +172,10 @@ Encontramos un archivo con …
 
 ## Explotación posterior
 
-<aside>
 💡 En esta sección, debes detallar los pasos que seguiste después de explotar con éxito la máquina. Esto incluye cosas como:
-
-</aside>
 
 ### Escalada de privilegios
 
 ## Conclusión
 
-<aside>
 💡 En esta sección, debes proporcionar un resumen de la máquina para cuando tengas que volver a ella, puedas saber conocer de forma rápida de que se trataba
-
-</aside>
