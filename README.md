@@ -10,8 +10,6 @@ Aquí encontrarás:
 
 🧠 Metodologías y razonamientos
 
-🧰 Cheatsheets y herramientas útiles
-
 📝 Writeups detallados y claros
 
 Cada resolución va orientada a entender el por qué y el cómo, no solo el resultado.
