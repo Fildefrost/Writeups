@@ -20,13 +20,6 @@ Las principales plataformas y entornos vulnerables usados:&#x20;
 
 
 
-| Plataforma                                      | Estado            | Enlaces/Progreso              |
-| ----------------------------------------------- | ----------------- | ----------------------------- |
-| [**Hack The Box**](https://www.hackthebox.com/) |                   | Writeups → /                  |
-| [**THM**](https://tryhackme.com/)               | Progreso continuo | Writeups → _(agregar enlace)_ |
-| [**Dockerlabs**](https://dockerlabs.es/)        |                   |                               |
-| [**Hackerlabs**](https://thehackerslabs.com/)   |                   |                               |
-
 🎯 Objetivo del proyecto
 
 ✔ Mejorar mis habilidades en pentesting&#x20;
